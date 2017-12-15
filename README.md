@@ -4,6 +4,10 @@ A drop-in toolbar to visualize web client performance.
 # Engineering Spec
 The [initial engineering spec](https://microsoft.sharepoint.com/:w:/r/teams/Sway/_layouts/15/Doc.aspx?sourcedoc=%7Bb321f8b7-6492-4031-99bf-70c3f5080501%7D&action=edit) is access-limited to Microsoft employees. Once the core version of this tool ships, documentation will need to be updated and that spec will be abandoned in favor of describing, tracking, and planning work in this repository.
 
+# Getting Started
+
+1. `npm install`
+
 # Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a

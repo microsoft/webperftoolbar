@@ -10,7 +10,8 @@ module.exports = {
                 use: 'ts-loader',
                 exclude: '/node_modules/'
             }
-        ]
+        ],
+        exprContextCritical: false
     },
     resolve: {
         extensions: ['.ts', '.js']
