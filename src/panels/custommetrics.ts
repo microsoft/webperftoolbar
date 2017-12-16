@@ -1,5 +1,9 @@
+import { Button } from '../button';
+import { IPanel } from '../ipanel';
+
+
 /** Describes the custom metrics panel. */
-class CustomMetricPanel implements Panel
+export class CustomMetricPanel implements IPanel
 {
     /** @see Panel.name */
     name: string;

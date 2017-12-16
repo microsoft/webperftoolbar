@@ -1,3 +1,4 @@
+import { IPanel } from './ipanel';
 
 /** Describes the toolbar. */
 export class Toolbar
@@ -9,24 +10,26 @@ export class Toolbar
      * @param panels The panels to be displayed when the toolbar is opened.
      * @param container Optional parameter that defaults to the body of the HTML page.
      */
-    constructor(private panels: Panel[], container: HTMLElement = window.document.body)
+    constructor(private panels: IPanel[], private container: HTMLElement = window.document.body)
     {
         this.root = document.createElement("div");
         container.appendChild(this.root);
     }
 
-    public render(container: HTMLElement): void
+    public render(): void
     {
-        var out: string[] = new Array(4);
-        out.push("<ul>");
+        // clear all children
+        this.container.innerHTML = "";
+
+        const ul = document.createElement("ul");
         for(let p of this.panels)
         {
             for(let b of p.getButtons())
             {
-                out.push(`<li style="background-color:{$b}">${b.emoji} ${b.getValue()}</li>`);
+                b.render(ul);
             }
         }
-        out.push("</ul>");
-        container.innerHTML = out.join("");
+
+        this.container.appendChild(ul);
     }
 }

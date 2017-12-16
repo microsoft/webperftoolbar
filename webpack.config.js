@@ -9,12 +9,18 @@ module.exports = {
                 test: /\.ts?$/,
                 use: 'ts-loader',
                 exclude: '/node_modules/'
-            }
+            },
+        ],
+        loaders: [
+            { test: /sinon\.js$/, loader: "imports?define=>false,require=>false"}
         ],
         exprContextCritical: false
     },
     resolve: {
-        extensions: ['.ts', '.js']
+        extensions: ['.ts', '.js'],
+        alias: {
+            sinon: 'sinon/pkg/sinon.js'
+        }
     },
     output: {
         filename: 'bundle.js',
