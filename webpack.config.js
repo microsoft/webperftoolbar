@@ -6,7 +6,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.ts?$/,
+                test: /\.tsx?$/,
                 use: 'ts-loader',
                 exclude: '/node_modules/'
             },
@@ -24,6 +24,8 @@ module.exports = {
     },
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'dist'),
+        library: 'Toolbar',
+        libraryTarget: 'var'
     }
 };

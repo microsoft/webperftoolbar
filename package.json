@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "node .\\node_modules\\karma\\bin\\karma start karma.conf.js",
-    "build": "webpack"
+    "build": "webpack",
+    "demo": "npm run build && node .\\node_modules\\http-server\\bin\\http-server -o -c-1"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +17,7 @@
     "@types/sinon": "^4.1.2",
     "chai": "^4.1.2",
     "enzyme": "^3.2.0",
+    "http-server": "^0.10.0",
     "karma": "^1.7.1",
     "karma-chrome-launcher": "^2.2.0",
     "karma-ie-launcher": "^1.0.0",

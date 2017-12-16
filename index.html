@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Demo for WebPerfToolbar</title>
+    </head>
+    <body>
+        <script defer>
+            (function() {
+                var initFunc = function() {
+                    var s = document.createElement("script");
+                    s.setAttribute("src", "dist\\bundle.js");
+                    s.setAttribute("defer", "true");
+                    s.onload = startFunc;
+                    document.body.appendChild(s);
+                }
+
+                var startFunc = function() {
+                    /** Configure this to include the panels you need */
+                    (new Toolbar.Toolbar([
+                        {
+                            getButtons: function() {
+                                return new Toolbar.Button("Foo", function() { return "1"; }, function() { return "red"; })
+                            }
+                        }
+                    ])).render();
+                    /** End configuration */
+                }
+
+                if('requestIdleCallback' in window)
+                    requestIdleCallback(initFunc);
+                else if(document.readyState == 'complete')
+                    initFunc();
+                else
+                    document.addEventListener("load", function() {
+                        setTimeout(initFunc, 1000);
+                    });
+            })();
+        </script>
+    </body>
+</html>
