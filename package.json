@@ -2,7 +2,7 @@
   "name": "webperftoolbar",
   "version": "0.1.0-alpha",
   "description": "A toolbar for monitoring web performance.",
-  "main": "index.js",
+  "main": "dist/bundle.js",
   "scripts": {
     "test": "node .\\node_modules\\karma\\bin\\karma start karma.conf.js",
     "build": "webpack",

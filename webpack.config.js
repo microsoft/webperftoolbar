@@ -1,14 +1,19 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/toolbar.ts',
+    entry: './src/index.ts',
     devtool: 'inline-source-map',
     module: {
         rules: [
             {
                 test: /\.tsx?$/,
-                use: 'ts-loader',
-                exclude: '/node_modules/'
+                use: [{
+                    loader: 'ts-loader',
+                    options: {
+                        configFile: 'tsconfig.json',
+                        logLevel: 'info'
+                    }
+                }]
             },
         ],
         loaders: [
@@ -20,12 +25,13 @@ module.exports = {
         extensions: ['.ts', '.js'],
         alias: {
             sinon: 'sinon/pkg/sinon.js'
-        }
+        },
+        modules: ['src', 'node_modules']
     },
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
-        library: 'Toolbar',
+        library: 'PerfToolbar',
         libraryTarget: 'var'
     }
 };

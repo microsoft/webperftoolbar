@@ -1,12 +1,23 @@
 {
     "compilerOptions": {
-        "outDir": "./dist/",
+        "outDir": "dist",
         "noImplicitAny": true,
         "module": "es6",
         "target": "es5",
-        "sourceMap": true
+        "sourceMap": true,
+        "listFiles": true,
+        "baseUrl": "src",
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "traceResolution": true,
+        "importHelpers": true
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "dist"
+    ],
+    "include": [
+        "./src/**/*"
     ]
 }
