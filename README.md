@@ -1,12 +1,24 @@
 # Web Perf Toolbar
 A drop-in toolbar to visualize web client performance.
 
-# Engineering Spec
-The [initial engineering spec](https://microsoft.sharepoint.com/:w:/r/teams/Sway/_layouts/15/Doc.aspx?sourcedoc=%7Bb321f8b7-6492-4031-99bf-70c3f5080501%7D&action=edit) is access-limited to Microsoft employees. Once the core version of this tool ships, documentation will need to be updated and that spec will be abandoned in favor of describing, tracking, and planning work in this repository.
+# Engineering Spec and Work Tracking
+The initial work is being completed by Sway engineers.
+
+The [initial engineering spec](https://microsoft.sharepoint.com/:w:/r/teams/Sway/_layouts/15/Doc.aspx?sourcedoc=%7Bb321f8b7-6492-4031-99bf-70c3f5080501%7D&action=edit) is access-limited to Microsoft employees.
+
+Work tracking is within the Sway project in Office's Visual Studio, under [Task Group 2031043](https://office.visualstudio.com/Sway/_workitems/edit/2031043).
+
+Once the core version of this tool ships, documentation will need to be updated and the initial spec will be abandoned in favor of describing, tracking, and planning work in this repository.
 
 # Getting Started
 
 1. `npm install`
+
+# Commands
+
+- `npm run build` Kicks off a Webpack build.
+- `npm run test` Builds then launches a test runner in IE and Chrome that watches for changes.
+- `npm run demo` Builds then launches a page with a demo of the toolbar.
 
 # Contributing
 
