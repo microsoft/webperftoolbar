@@ -1,4 +1,4 @@
-import "IPanel"; import { IPanel } from './ipanel';
+import "./ipanel"; import { IPanel } from './ipanel';
 
 /** Describes the toolbar. */
 export class Toolbar
