@@ -15,32 +15,9 @@
                 }
 
                 var startFunc = function() {
-                    /** Fake a panel with a single button */
-                    var fakePanel = {
-                        getButtons: function () {
-                            return [new PerfToolbar.Button(
-                                '#',
-                                function () { return '1'},
-                                function () { return 'gray'}
-                            )];
-                        }
-                    };
-
-                    /** Fake another panel with a single button */
-                    var fakePanel2 = {
-                        getButtons: function () {
-                            return [new PerfToolbar.Button(
-                                '#',
-                                function () { return '2'},
-                                function () { return 'lightgray'}
-                            )];
-                        }
-                    };
-
                     /** Configure this to include the panels you need */
                     (new PerfToolbar.Toolbar([
-                        fakePanel,
-                        fakePanel2
+                        new PerfToolbar.NavigationTimingsPanel()
                     ])).render();
                     /** End configuration */
                 }
