@@ -6,7 +6,8 @@
   "scripts": {
     "test": "node .\\node_modules\\karma\\bin\\karma start karma.conf.js",
     "build": "webpack",
-    "demo": "npm run build && node .\\node_modules\\http-server\\bin\\http-server -o -c-1"
+    "demo": "npm run build && node .\\node_modules\\http-server\\bin\\http-server -o -c-1",
+    "tsc": "node D:\\repos\\webperftoolbar\\node_modules\\typescript\\bin\\tsc --p tsconfig.json"
   },
   "keywords": [],
   "author": "",
