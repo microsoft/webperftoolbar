@@ -1,4 +1,5 @@
 const path = require('path');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = {
     entry: './src/index.ts',
@@ -7,20 +8,21 @@ module.exports = {
         rules: [
             {
                 test: /\.tsx?$/,
-                use: [{
-                    loader: 'ts-loader',
-                    options: {
-                        configFile: 'tsconfig.json',
-                        logLevel: 'info'
-                    }
-                }]
-            },
+                loader: 'ts-loader',
+                options: {
+                    // disable type checker - we will use it in fork plugin
+                    transpileOnly: true
+                }
+            }
         ],
         loaders: [
-            { test: /sinon\.js$/, loader: "imports?define=>false,require=>false"}
+            { test: /sinon\.js$/, loader: "imports?define=>false,require=>false" }
         ],
         exprContextCritical: false
     },
+    plugins: [
+        new ForkTsCheckerWebpackPlugin({ tslint: true })
+    ],
     resolve: {
         extensions: ['.ts', '.js'],
         alias: {

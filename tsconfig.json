@@ -2,16 +2,31 @@
     "compilerOptions": {
         "outDir": "dist/tsc",
         "noImplicitAny": true,
-        "module": "es6",
+        "module": "es2015",
         "target": "es5",
         "sourceMap": true,
         "listFiles": true,
         "baseUrl": "src",
-        "typeRoots": [
-            "node_modules/@types"
+        "types": [
+            "tslib",
+            "chai",
+            "mocha",
+            "sinon"
         ],
-        "traceResolution": true,
-        "importHelpers": true
+        "lib": [ "dom", "es2015" ],
+        "paths": {
+            "tslib": ["../node_modules/tslib/tslib.d.ts"]
+        },
+        "moduleResolution": "classic",
+        "traceResolution": false,
+        "importHelpers": true,
+        "strict": true,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "pretty": true
     },
     "exclude": [
         "node_modules",
