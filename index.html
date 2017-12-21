@@ -18,22 +18,22 @@
                     /** Fake a panel with a single button */
                     var fakePanel = {
                         getButtons: function () {
-                            return [new PerfToolbar.Button(
-                                '#',
-                                function () { return '1'},
-                                function () { return 'gray'}
-                            )];
+                            return [new PerfToolbar.Button({
+                                emoji: '#',
+                                getValue: function () { return '1'},
+                                getColor: function () { return 'gray'}
+                            })];
                         }
                     };
 
                     /** Fake another panel with a single button */
                     var fakePanel2 = {
                         getButtons: function () {
-                            return [new PerfToolbar.Button(
-                                '#',
-                                function () { return '2'},
-                                function () { return 'lightgray'}
-                            )];
+                            return [new PerfToolbar.Button({
+                                emoji: '#',
+                                getValue: function () { return '2'},
+                                getColor: function () { return 'lightgray'}
+                            })];
                         }
                     };
 
