@@ -18,7 +18,7 @@
             "tslib": ["../node_modules/tslib/tslib.d.ts"]
         },
         "moduleResolution": "classic",
-        "traceResolution": true,
+        "traceResolution": false,
         "importHelpers": true,
         "strict": true,
         "noFallthroughCasesInSwitch": true,

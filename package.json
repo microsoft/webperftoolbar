@@ -7,7 +7,8 @@
     "test": "karma start karma.conf.js",
     "build": "webpack",
     "demo": "npm run build && http-server -o -c-1",
-    "tsc-verbose": "tsc -p tsconfig.json"
+    "tsc-verbose": "tsc -p tsconfig.json --traceResolution true",
+    "tslint": "tslint -p ."
   },
   "keywords": [],
   "author": "",
@@ -18,6 +19,7 @@
     "@types/sinon": "^4.1.2",
     "chai": "^4.1.2",
     "enzyme": "^3.2.0",
+    "fork-ts-checker-webpack-plugin": "^0.2.9",
     "http-server": "^0.10.0",
     "karma": "^1.7.1",
     "karma-chrome-launcher": "^2.2.0",
@@ -33,7 +35,6 @@
     "ts-node": "^4.0.1",
     "tslib": "^1.8.1",
     "tslint": "5.8.0",
-    "tslint-loader": "^3.5.3",
     "typescript": "^2.6.2",
     "webpack": "^3.10.0"
   }

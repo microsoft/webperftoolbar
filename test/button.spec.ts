@@ -1,13 +1,13 @@
-import { assert, expect } from 'chai';
-import 'mocha';
-import { Toolbar } from '../src/toolbar';
-import { Button } from '../src/button';
+import { assert, expect } from "chai";
+import "mocha";
+import { Button, IButtonConfiguration } from "../src/button";
+import { Toolbar } from "../src/toolbar";
 
-describe('Button class', () => {
+describe("Button class", () => {
 
     it("should have empty default values", () => {
-        const container = document.createElement("ul");
-        const button = new Button();
+        const container: HTMLElement = document.createElement("ul");
+        const button: Button = new Button();
         button.render(container);
 
         expect(button.emoji).to.equal("");
@@ -16,19 +16,21 @@ describe('Button class', () => {
     });
 
     it("should be a list item", () => {
-        const container = document.createElement("ul");
-        const button = new Button();
+        const container: HTMLElement = document.createElement("ul");
+        const button: Button = new Button();
         button.render(container);
 
         expect(container.firstChild).instanceof(HTMLLIElement, "We expect buttons to be list items");
-    })
+    });
 
     it("should render the emoji followed by the value", () => {
-        const container = document.createElement("ul");
-        const button = new Button({
+        const container: HTMLElement = document.createElement("ul");
+        const config: IButtonConfiguration = {
             emoji: "EMOJI",
-            getValue: () => "VALUE"
-        });
+            getValue: (): string => "VALUE",
+        };
+        const button: Button = new Button(config);
+
         button.render(container);
 
         expect(container.firstElementChild.innerHTML)
@@ -36,8 +38,12 @@ describe('Button class', () => {
     });
 
     it("should render the color as a background color", () => {
-        const container = document.createElement("ul");
-        const button = new Button({ getColor: () => "red" });
+        const container: HTMLElement = document.createElement("ul");
+        const config: IButtonConfiguration = {
+            getColor: (): string => "red",
+        };
+        const button: Button = new Button(config);
+
         button.render(container);
 
         expect(container.firstElementChild.getAttribute("style"))
