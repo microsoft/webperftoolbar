@@ -1,0 +1,41 @@
+{
+  "name": "webperftoolbar",
+  "version": "0.1.0-alpha",
+  "description": "A toolbar for monitoring web performance.",
+  "main": "dist/bundle.js",
+  "scripts": {
+    "test": "karma start karma.conf.js",
+    "build": "webpack",
+    "demo": "npm run build && http-server -o -c-1",
+    "tsc-verbose": "tsc -p tsconfig.json --traceResolution true",
+    "tslint": "tslint -p ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "devDependencies": {
+    "@types/chai": "^4.0.10",
+    "@types/mocha": "^2.2.44",
+    "@types/sinon": "^4.1.2",
+    "chai": "^4.1.2",
+    "enzyme": "^3.2.0",
+    "fork-ts-checker-webpack-plugin": "^0.2.9",
+    "http-server": "^0.10.0",
+    "karma": "^1.7.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-ie-launcher": "^1.0.0",
+    "karma-mocha": "^1.3.0",
+    "karma-requirejs": "^1.1.0",
+    "karma-webpack": "^2.0.9",
+    "mocha": "^4.0.1",
+    "mocha-webpack": "^1.0.1",
+    "requirejs": "^2.3.5",
+    "sinon": "^4.1.3",
+    "ts-loader": "^3.2.0",
+    "ts-node": "^4.0.1",
+    "tslib": "^1.8.1",
+    "tslint": "5.8.0",
+    "typescript": "^2.6.2",
+    "webpack": "^3.10.0"
+  }
+}
