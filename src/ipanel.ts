@@ -1,4 +1,4 @@
-import "./button"; import { Button } from './button';
+import { Button } from './button';
 
 /** Describes a panel within the opened toolbar. */
 export interface IPanel

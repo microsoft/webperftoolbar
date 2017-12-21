@@ -5,28 +5,40 @@ import { Button } from '../src/button';
 
 describe('Button class', () => {
 
-    const setupContainer = () => {
+    it("should have empty default values", () => {
         const container = document.createElement("ul");
-        const button = new Button("EMOJI", () => "VALUE", () => "red");
+        const button = new Button();
         button.render(container);
 
-        return container;
-    }
+        expect(button.emoji).to.equal("");
+        expect(button.getValue()).to.equal("");
+        expect(button.getColor()).to.equal("");
+    });
 
     it("should be a list item", () => {
-        const container = setupContainer();
+        const container = document.createElement("ul");
+        const button = new Button();
+        button.render(container);
+
         expect(container.firstChild).instanceof(HTMLLIElement, "We expect buttons to be list items");
     })
 
     it("should render the emoji followed by the value", () => {
-        const container = setupContainer();
+        const container = document.createElement("ul");
+        const button = new Button({
+            emoji: "EMOJI",
+            getValue: () => "VALUE"
+        });
+        button.render(container);
 
         expect(container.firstElementChild.innerHTML)
             .equals("EMOJI VALUE", "We expect the button to show the label and value we set");
     });
 
     it("should render the color as a background color", () => {
-        const container = setupContainer();
+        const container = document.createElement("ul");
+        const button = new Button({ getColor: () => "red" });
+        button.render(container);
 
         expect(container.firstElementChild.getAttribute("style"))
             .to.match(/red(;)?$/, "We expect the color to red");
