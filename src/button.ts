@@ -1,12 +1,18 @@
+import { IPanel } from "./ipanel";
+
 export interface IButtonConfiguration {
     /** The icon for the button. The intention is to use a single character emoji but it's just a string, so anything goes */
     emoji?: string;
+
+    /** The panel that owns this button */
+    parent?: IPanel;
 
     /** Gets the background color for the button. */
     getColor?(): string;
 
     /** Gets the displayed value for the button. */
     getValue?(): string;
+
 }
 
 /** Describes a button to be displayed in the collapsed toolbar. */
@@ -20,11 +26,14 @@ export class Button {
     /** Gets the displayed value for the button. */
     public readonly getValue: (() => string);
 
+    public readonly parent: IPanel | undefined;
+
     /**
      * Create the button.
      */
     public constructor(config: IButtonConfiguration = {}) {
         this.emoji = config.emoji !== undefined ? config.emoji : "";
+        this.parent = config.parent;
         /* tslint:disable no-unbound-method */
         this.getValue = config.getValue !== undefined ? config.getValue : (): string => "";
         this.getColor = config.getColor !== undefined ? config.getColor : (): string => "";
@@ -39,6 +48,12 @@ export class Button {
         const li: HTMLLIElement = document.createElement("li");
         li.setAttribute("style", `background-color:${this.getColor()}`);
         li.innerText = `${this.emoji} ${this.getValue()}`;
+
+        li.addEventListener("click", () => {
+            if (this.parent) {
+                this.parent.toggle();
+            }
+        });
 
         container.appendChild(li);
     }

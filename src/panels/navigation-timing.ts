@@ -1,72 +1,97 @@
-import { IPanel } from 'ipanel';
-import { Button } from 'button';
+import { Button } from "../button";
+import { Formatter } from "../formatter";
+import { IPanel } from "../ipanel";
 
-export class NavigationTimingsPanel implements IPanel
-{
-    name: "Navigation Timings";
+/**
+ * Provides a panel that shows the navigation timings for a page
+ */
+export class NavigationTimingsPanel implements IPanel {
+    /** The name of the panel */
+    public name: "Navigation Timings";
 
-    render(target: HTMLElement): void {
-        const t = performance.timing;
+    public constructor(frame: PanelFrame) {
+
+    }
+
+    /**
+     * Gets the buttons to be displayed
+     * @see IPanel.getButtons
+     */
+    public getButtons(): Button[] {
+        const goalMs: number = 500;
+
+        return [new Button({
+            parent: this,
+            emoji: "⏱️",
+            getValue: (): string => `${Formatter.duration(performance.timing.loadEventEnd, performance.timing.navigationStart)} ms`,
+            getColor: (): string => performance.timing.loadEventEnd - performance.timing.navigationStart < goalMs ? "green" : "red",
+        })];
+    }
+
+    /**
+     * Renders the contents of the panel
+     * @see IPanel.render
+     */
+    public render(target: HTMLElement): void {
+        const t: PerformanceTiming = performance.timing;
 
         target.innerHTML = `
         <table>
             <tr>
                 <th>Get Connected</th>
-                <td>${(t.connectEnd - t.domainLookupStart).toFixed(2)} ms</td>
+                <td>${Formatter.duration(t.connectEnd, t.domainLookupStart)} ms</td>
             </tr>
             <tr>
                 <td>DNS Lookup</td>
-                <td>${(t.domainLookupEnd - t.domainLookupStart).toFixed(2)} ms</td>
+                <td>${Formatter.duration(t.domainLookupEnd, t.domainLookupStart)} ms</td>
             </tr>
             <tr>
                 <td>SSL</td>
-                <td>${(t.connectEnd - t.connectStart).toFixed(2)} ms</td>
+                <td>${Formatter.duration(t.connectEnd, t.connectStart)} ms</td>
             </tr>
             <tr>
                 <th>Get Content</th>
-                <td>${(t.responseEnd - t.requestStart).toFixed(2)} ms</td>
+                <td>${Formatter.duration(t.responseEnd, t.requestStart)} ms</td>
             </tr>
             <tr>
                 <td>Waiting for Server</td>
-                <td>${(t.responseStart - t.requestStart).toFixed(2)} ms</td>
+                <td>${Formatter.duration(t.responseStart, t.requestStart)} ms</td>
             </tr>
             <tr>
                 <td>Time To Download</td>
-                <td>${(t.responseEnd - t.responseStart).toFixed(2)} ms</td>
+                <td>${Formatter.duration(t.responseEnd, t.responseStart)} ms</td>
             </tr>
             <tr>
                 <th colspan=2>Get Ready</th>
             </tr>
             <tr>
                 <td>Parse Content</td>
-                <td>${(t.domInteractive - t.responseEnd).toFixed(2)} ms</td>
+                <td>${Formatter.duration(t.domInteractive, t.responseEnd)} ms</td>
             </tr>
             <tr>
                 <td>Deferred Scripts</td>
-                <td>${(t.domContentLoadedEventEnd - t.domInteractive).toFixed(2)} ms</td>
+                <td>${Formatter.duration(t.domContentLoadedEventEnd, t.domInteractive)} ms</td>
             </tr>
             <tr>
                 <td>DOM Complete</td>
-                <td>${(t.domComplete - t.domContentLoadedEventEnd).toFixed(2)} ms</td>
+                <td>${Formatter.duration(t.domComplete, t.domContentLoadedEventEnd)} ms</td>
             </tr>
             <tr>
                 <td>Load Event</td>
-                <td>${(t.loadEventEnd - t.loadEventStart).toFixed(2)} ms</td>
+                <td>${Formatter.duration(t.loadEventEnd, t.loadEventStart)} ms</td>
             </tr>
             <tr>
                 <th>Total Load</th>
-                <td>${(t.loadEventEnd - t.navigationStart).toFixed(2)} ms</td>
+                <td>${Formatter.duration(t.loadEventEnd, t.navigationStart)} ms</td>
             </tr>
         </table>
         `;
     }
 
-    getButtons(): Button[] {
-        return [new Button(
-            '⏱️',
-            () => `${(performance.timing.loadEventEnd - performance.timing.navigationStart).toFixed(2)} ms`,
-            () => performance.timing.loadEventEnd - performance.timing.navigationStart < 500 ? "green" : "red"
-        )];
+    /**
+     * Toggles the display of this panel.
+     */
+    public toggle(): void {
+        throw new Error("Method not implemented.");
     }
-
 }

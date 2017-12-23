@@ -15,4 +15,8 @@ export class MockPanel implements IPanel {
     public render(target: HTMLElement): void {
         throw new Error("Method not implemented.");
     }
+
+    public toggle(): void {
+        throw new Error("Method not implemented.");
+    }
 }
