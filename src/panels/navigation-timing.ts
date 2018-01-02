@@ -1,6 +1,7 @@
 import { Button } from "../button";
 import { Formatter } from "../formatter";
 import { IPanel } from "../ipanel";
+import { PanelFrame } from "../panelframe";
 
 /**
  * Provides a panel that shows the navigation timings for a page
@@ -9,8 +10,11 @@ export class NavigationTimingsPanel implements IPanel {
     /** The name of the panel */
     public name: "Navigation Timings";
 
-    public constructor(frame: PanelFrame) {
+    /** The frame that displays this panel. */
+    private frame: PanelFrame;
 
+    public constructor(frame: PanelFrame) {
+        this.frame = frame;
     }
 
     /**
@@ -92,6 +96,6 @@ export class NavigationTimingsPanel implements IPanel {
      * Toggles the display of this panel.
      */
     public toggle(): void {
-        throw new Error("Method not implemented.");
+        this.frame.toggle(this);
     }
 }

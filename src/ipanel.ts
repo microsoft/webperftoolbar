@@ -1,4 +1,5 @@
 import { Button } from "./button";
+import { PanelFrame } from "./panelframe";
 
 export interface IPanelConstructor {
     new (frame: PanelFrame): IPanel;
@@ -23,5 +24,3 @@ export interface IPanel {
     /** Toggles the visibility of this panel */
     toggle(): void;
 }
-
-const createPanel: (ctor: IPanelConstructor, frame: PanelFrame) => IPanel = (ctor: IPanelConstructor, frame: PanelFrame): IPanel => new ctor(frame);

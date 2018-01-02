@@ -16,9 +16,7 @@
 
                 var startFunc = function() {
                     /** Configure this to include the panels you need */
-                    (new PerfToolbar.Toolbar([
-                        new PerfToolbar.NavigationTimingsPanel()
-                    ])).render();
+                    (new PerfToolbar.Toolbar([PerfToolbar.NavigationTimingsPanel])).render();
                     /** End configuration */
                 }
 

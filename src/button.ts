@@ -1,10 +1,13 @@
 import { IPanel } from "./ipanel";
 
+/**
+ * The configuration options for constructing a button.
+ */
 export interface IButtonConfiguration {
-    /** The icon for the button. The intention is to use a single character emoji but it's just a string, so anything goes */
+    /** The icon for the button. The intention is to use a single character emoji but it's just a string, so anything goes. */
     emoji?: string;
 
-    /** The panel that owns this button */
+    /** The panel that owns this button. */
     parent?: IPanel;
 
     /** Gets the background color for the button. */
@@ -17,7 +20,7 @@ export interface IButtonConfiguration {
 
 /** Describes a button to be displayed in the collapsed toolbar. */
 export class Button {
-    /** The icon for the button. The intention is to use a single character emoji but it's just a string, so anything goes */
+    /** The icon for the button. The intention is to use a single character emoji but it's just a string, so anything goes. */
     public readonly emoji: string;
 
     /** Gets the background color for the button. */
@@ -26,6 +29,7 @@ export class Button {
     /** Gets the displayed value for the button. */
     public readonly getValue: (() => string);
 
+    /** The panel that provides this button. */
     public readonly parent: IPanel | undefined;
 
     /**
