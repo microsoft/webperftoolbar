@@ -2,6 +2,41 @@
 <html>
     <head>
         <title>Demo for WebPerfToolbar</title>
+<style>
+/** TODO: These need to be moved into JS (for ease of usage in an app). They're inline in the demo for ease of development. */
+
+#PTB_buttons {
+    position:fixed;
+    bottom: 0;
+    left: 50px;
+    border:1px solid black;
+    border-bottom: none;
+
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+#PTB_buttons li {
+    display:inline-block;
+    line-height:1.6em;
+    margin-left:0.5em;
+    padding:0.2em;
+    cursor:pointer;
+}
+#PTB_buttons li:first-child {
+    margin-left:0;
+}
+
+#PTB_frame {
+    position:fixed;
+    width:30%;
+    min-width:300px;
+    right:0;
+    top:0;
+    height:100%;
+    border-left:1px solid black;
+}
+</style>
     </head>
     <body>
         <script defer>
@@ -20,7 +55,7 @@
                         {
                             panel: PerfToolbar.NavigationTimingsPanel,
                             config: {
-                                goalMs: 20
+                                goalMs: 25
                             }
                         },
                     /** End configuration */
