@@ -15,9 +15,16 @@
                 }
 
                 var startFunc = function() {
-                    /** Configure this to include the panels you need */
-                    (new PerfToolbar.Toolbar([PerfToolbar.NavigationTimingsPanel])).render();
+                    (new PerfToolbar.Toolbar([
+                        /** Configure this to include the panels you need */
+                        {
+                            panel: PerfToolbar.NavigationTimingsPanel,
+                            config: {
+                                goalMs: 20
+                            }
+                        },
                     /** End configuration */
+                    ])).render();
                 }
 
                 if('requestIdleCallback' in window)

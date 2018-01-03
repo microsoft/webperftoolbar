@@ -17,6 +17,7 @@ export class PanelFrame {
      */
     public constructor(toolbarRoot: HTMLElement) {
         this.frame = document.createElement("div");
+        this.frame.setAttribute("id", "PTB_frame");
         toolbarRoot.appendChild(this.frame);
 
         this.isVisible = false;

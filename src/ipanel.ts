@@ -1,8 +1,18 @@
 import { Button } from "./button";
 import { PanelFrame } from "./panelframe";
 
-export interface IPanelConstructor {
-    new (frame: PanelFrame): IPanel;
+export interface IPanelWithConfiguration<C, P> {
+    config: C;
+    panel: IPanelConstructor<C, P>;
+}
+
+export interface IPanelConstructor<C, P> {
+    new (frame: PanelFrame, config: C): P;
+}
+
+// tslint:disable-next-line:no-empty-interface
+export interface IPanelConfig {
+
 }
 
 /** Describes a panel within the opened toolbar. */

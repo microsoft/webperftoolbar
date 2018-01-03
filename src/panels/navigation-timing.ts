@@ -1,7 +1,18 @@
 import { Button } from "../button";
 import { Formatter } from "../formatter";
-import { IPanel } from "../ipanel";
+import { IPanel, IPanelConfig } from "../ipanel";
 import { PanelFrame } from "../panelframe";
+
+/** Describes the configuration options available for the network panel */
+export interface INavigationTimingsPanelConfig extends IPanelConfig {
+    /** The goal for the load duration */
+    goalMs: number;
+}
+
+/** A set of default configuration options for the navigation timings panel */
+const navigationTimingsPanelDefaultConfig: INavigationTimingsPanelConfig = {
+    goalMs: 500,
+};
 
 /**
  * Provides a panel that shows the navigation timings for a page
@@ -10,11 +21,15 @@ export class NavigationTimingsPanel implements IPanel {
     /** The name of the panel */
     public name: "Navigation Timings";
 
+    /** The settings for this panel. */
+    private config: INavigationTimingsPanelConfig;
+
     /** The frame that displays this panel. */
     private frame: PanelFrame;
 
-    public constructor(frame: PanelFrame) {
+    public constructor(frame: PanelFrame, config?: INavigationTimingsPanelConfig) {
         this.frame = frame;
+        this.config = config !== undefined ? config : navigationTimingsPanelDefaultConfig;
     }
 
     /**
@@ -22,13 +37,11 @@ export class NavigationTimingsPanel implements IPanel {
      * @see IPanel.getButtons
      */
     public getButtons(): Button[] {
-        const goalMs: number = 500;
-
         return [new Button({
             parent: this,
             emoji: "⏱️",
             getValue: (): string => `${Formatter.duration(performance.timing.loadEventEnd, performance.timing.navigationStart)} ms`,
-            getColor: (): string => performance.timing.loadEventEnd - performance.timing.navigationStart < goalMs ? "green" : "red",
+            getColor: (): string => performance.timing.loadEventEnd - performance.timing.navigationStart < this.config.goalMs ? "green" : "red",
         })];
     }
 

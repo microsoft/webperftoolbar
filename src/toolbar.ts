@@ -1,4 +1,4 @@
-import { IPanel, IPanelConstructor } from "./ipanel";
+import { IPanel, IPanelConfig, IPanelWithConfiguration } from "./ipanel";
 import { PanelFrame } from "./panelframe";
 
 /** Describes the toolbar. */
@@ -14,13 +14,15 @@ export class Toolbar {
      * @param panels Classes for the panels to be displayed when the toolbar is opened.
      * @param container Optional parameter for the element that contains the toolbar. It defaults to the body of the HTML page.
      */
-    public constructor(panels: IPanelConstructor[], container: HTMLElement = window.document.body) {
+    public constructor(panels: Array<IPanelWithConfiguration<IPanelConfig, IPanel>>, container: HTMLElement = window.document.body) {
         this.toolbarRoot = document.createElement("div");
+        this.toolbarRoot.setAttribute("id", "PTB_root");
         container.appendChild(this.toolbarRoot);
 
         // Construct the frame and the panels that use it
         const frame: PanelFrame = new PanelFrame(this.toolbarRoot);
-        this.panels = panels.map((panel: IPanelConstructor): IPanel => new panel(frame));
+        this.panels = panels.map((panelWithConfig: IPanelWithConfiguration<IPanelConfig, IPanel>): IPanel =>
+            new panelWithConfig.panel(frame, panelWithConfig.config));
     }
 
     /**
@@ -28,6 +30,7 @@ export class Toolbar {
      */
     public render(): void {
         const listOfButtons: HTMLUListElement = document.createElement("ul");
+        listOfButtons.setAttribute("id", "PTB_buttons");
         for (const panel of this.panels) {
             for (const button of panel.getButtons()) {
                 button.render(listOfButtons);
