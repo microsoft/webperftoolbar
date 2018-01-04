@@ -28,7 +28,7 @@ describe("Toolbar class", () => {
 
         toolbar.render();
 
-        const expectedList: Element = container.firstElementChild.children.item(1);
+        const expectedList: Element = container.firstElementChild.children.item(0);
         expect(expectedList).instanceof(HTMLUListElement, "We expect the toolbar to be a list");
         expect(expectedList.childElementCount).equals(1, "We expect that list to have one item");
     });
