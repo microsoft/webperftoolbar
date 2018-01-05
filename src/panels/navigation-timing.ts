@@ -1,7 +1,6 @@
 import { Button } from "../button";
-import { Formatter } from "../formatter";
+import * as Formatter from "../formatter";
 import { IPanel, IPanelConfig } from "../ipanel";
-import { PanelConfigMerger } from "../panelconfigmerger";
 import { PanelFrame } from "../panelframe";
 
 /** Describes the configuration options available for the network panel */
@@ -23,17 +22,17 @@ const navigationTimingsPanelDefaultConfig: INavigationTimingsPanelConfig = {
  */
 export class NavigationTimingsPanel implements IPanel {
     /** The name of the panel */
-    public name: "Navigation Timings";
+    public readonly name: string = "Navigation Timings";
 
     /** The settings for this panel. */
-    private config: INavigationTimingsPanelConfig;
+    private readonly config: INavigationTimingsPanelConfig;
 
     /** The frame that displays this panel. */
-    private frame: PanelFrame;
+    private readonly frame: PanelFrame;
 
     public constructor(frame: PanelFrame, config?: INavigationTimingsPanelConfig) {
         this.frame = frame;
-        this.config = PanelConfigMerger.merge(navigationTimingsPanelDefaultConfig, config);
+        this.config = { ...navigationTimingsPanelDefaultConfig, ...config };
     }
 
     /**

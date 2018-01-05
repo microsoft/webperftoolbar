@@ -15,7 +15,6 @@ export interface IButtonConfiguration {
 
     /** Gets the displayed value for the button. */
     getValue?(): string;
-
 }
 
 /** Describes a button to be displayed in the collapsed toolbar. */

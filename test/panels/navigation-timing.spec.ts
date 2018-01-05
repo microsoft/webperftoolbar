@@ -22,7 +22,6 @@ describe("Navigation timing panel class", () => {
 
         const buttons: Button[] = panel.getButtons();
 
-        console.log(buttons[0].getValue());
         expect(buttons.length).to.equal(1, "there should only be one button for this panel");
         expect(buttons[0].getColor()).to.equal("green", "the button should be green");
     });

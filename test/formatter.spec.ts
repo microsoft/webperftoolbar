@@ -2,13 +2,16 @@ import { assert, expect } from "chai";
 import "mocha";
 import * as sinon from "sinon";
 
-import { Formatter } from "../src/formatter";
+import * as Formatter from "../src/formatter";
 
 describe("Formatter class", () => {
-    describe("duration method", () => {
-        it("should return a dash for invalid input", () => {
-            expect(Formatter.duration(undefined, 0)).to.equal("-", "invalid input in first parameter generates a dash");
-            expect(Formatter.duration(0, undefined)).to.equal("-", "invalid input in second parameter generates a dash");
+    describe("duration", () => {
+        it("should return a dash for invalid input in the first parameter", () => {
+            expect(Formatter.duration(undefined, 0)).to.equal("-");
+        });
+
+        it("should return a dash for invalid input in the second parameter", () => {
+            expect(Formatter.duration(0, undefined)).to.equal("-");
         });
 
         it("should default to two decimal places", () => {

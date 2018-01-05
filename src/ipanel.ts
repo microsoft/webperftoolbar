@@ -17,7 +17,9 @@ export interface IPanelConfig {
 
 /** Describes a panel within the opened toolbar. */
 export interface IPanel {
-
+    /**
+     * The name of the panel.
+     */
     name: string;
 
     /**
