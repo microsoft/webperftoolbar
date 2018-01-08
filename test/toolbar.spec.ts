@@ -3,9 +3,9 @@ import "mocha";
 import * as sinon from "sinon";
 
 import { Button } from "../src/button";
-import { IPanel } from "../src/ipanel";
+import { IPanel, IPanelConstructor, IPanelWithConfiguration } from "../src/ipanel";
 import { Toolbar } from "../src/toolbar";
-import { MockPanel } from "./mock/panel.mock";
+import { IMockPanelConfig, MockPanel, mockPanelConfig } from "./mock/panel.mock";
 
 describe("Toolbar class", () => {
 
@@ -17,13 +17,18 @@ describe("Toolbar class", () => {
     });
 
     it("can render buttons", () => {
-        const panel: IPanel = new MockPanel((): Button[] => [new Button({})]);
         const container: HTMLElement = document.createElement("div");
-        const toolbar: Toolbar = new Toolbar([panel], container);
+
+        const mockPanelWithConfig: IPanelWithConfiguration<IMockPanelConfig, MockPanel> = {
+            panel: MockPanel,
+            config: mockPanelConfig,
+        };
+
+        const toolbar: Toolbar = new Toolbar([mockPanelWithConfig], container);
 
         toolbar.render();
 
-        const expectedList: Element = container.firstElementChild;
+        const expectedList: Element = container.firstElementChild.children.item(0);
         expect(expectedList).instanceof(HTMLUListElement, "We expect the toolbar to be a list");
         expect(expectedList.childElementCount).equals(1, "We expect that list to have one item");
     });

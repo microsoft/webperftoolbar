@@ -2,6 +2,55 @@
 <html>
     <head>
         <title>Demo for WebPerfToolbar</title>
+<style>
+/** TODO: These need to be moved into JS (for ease of usage in an app). They're inline in the demo for ease of development. */
+
+#PTB_buttons {
+    position:fixed;
+    bottom: 0;
+    left: 50px;
+    border:1px solid black;
+    border-bottom: none;
+
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+#PTB_buttons li {
+    display:inline-block;
+    line-height:1.6em;
+    margin-left:0.5em;
+    padding:0.2em;
+    cursor:pointer;
+}
+#PTB_buttons li:first-child {
+    margin-left:0;
+}
+
+#PTB_frame {
+    position:fixed;
+    width:30%;
+    min-width:300px;
+    right:0;
+    top:0;
+    height:100%;
+    border-left:1px solid black;
+}
+
+#PTB_frame table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid black;
+}
+#PTB_frame th {
+    font-weight: bold;
+}
+#PTB_frame th,
+#PTB_frame td {
+    border: 1px solid black;
+    padding:0.2em;
+}
+</style>
     </head>
     <body>
         <script defer>
@@ -15,34 +64,16 @@
                 }
 
                 var startFunc = function() {
-                    /** Fake a panel with a single button */
-                    var fakePanel = {
-                        getButtons: function () {
-                            return [new PerfToolbar.Button({
-                                emoji: '#',
-                                getValue: function () { return '1'},
-                                getColor: function () { return 'gray'}
-                            })];
-                        }
-                    };
-
-                    /** Fake another panel with a single button */
-                    var fakePanel2 = {
-                        getButtons: function () {
-                            return [new PerfToolbar.Button({
-                                emoji: '#',
-                                getValue: function () { return '2'},
-                                getColor: function () { return 'lightgray'}
-                            })];
-                        }
-                    };
-
-                    /** Configure this to include the panels you need */
                     (new PerfToolbar.Toolbar([
-                        fakePanel,
-                        fakePanel2
-                    ])).render();
+                        /** Configure this to include the panels you need */
+                        {
+                            panel: PerfToolbar.NavigationTimingsPanel,
+                            config: {
+                                goalMs: 25
+                            }
+                        },
                     /** End configuration */
+                    ])).render();
                 }
 
                 if('requestIdleCallback' in window)

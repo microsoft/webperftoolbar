@@ -25,7 +25,8 @@
         "prefer-function-over-method": false,
         "no-implicit-dependencies": [true, "dev"],
         "no-import-side-effect": false,
-        "strict-boolean-expressions": [true, "allow-undefined-union"]
+        "strict-boolean-expressions": [true, "allow-undefined-union"],
+        "interface-over-type-literal": false
     },
     "jsRules": {
         "max-line-length": {

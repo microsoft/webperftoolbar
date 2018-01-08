@@ -1,7 +1,25 @@
 import { Button } from "./button";
+import { PanelFrame } from "./panelframe";
+
+export interface IPanelWithConfiguration<C, P> {
+    config: C;
+    panel: IPanelConstructor<C, P>;
+}
+
+export interface IPanelConstructor<C, P> {
+    new (frame: PanelFrame, config: C): P;
+}
+
+// tslint:disable-next-line:no-empty-interface
+export interface IPanelConfig {
+
+}
 
 /** Describes a panel within the opened toolbar. */
 export interface IPanel {
+    /**
+     * The name of the panel.
+     */
     name: string;
 
     /**
@@ -14,4 +32,7 @@ export interface IPanel {
      * @param target The HTML element to contain this panel.
      */
     render(target: HTMLElement): void;
+
+    /** Toggles the visibility of this panel */
+    toggle(): void;
 }
