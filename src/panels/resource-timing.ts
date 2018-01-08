@@ -65,7 +65,7 @@ export class ResourceTimingsPanel implements IPanel {
                 emoji: "📦️",
                 getValue: (): string => `${(this.config.performance.getEntriesByType("resource") as IResourcePerformanceEntry[])
                     .map((entry: IResourcePerformanceEntry): number => entry.transferSize)
-                    .reduce((prev: number, current: number): number => prev + current, 0)} bytes`,
+                    .reduce((prev: number, current: number): number => prev + current, 0).toLocaleString()} bytes`,
                 getColor: (): string => "#9999FF",
             }),
             new Button({
@@ -98,14 +98,15 @@ export class ResourceTimingsPanel implements IPanel {
      */
     private getDetailTable(): string {
         const entries: IResourcePerformanceEntry[] = this.config.performance.getEntriesByType("resource") as IResourcePerformanceEntry[];
-        const rows: string = entries.map((entry: IResourcePerformanceEntry) => `
+    // tslint:disable:no-magic-numbers align
+    const rows: string = entries.map((entry: IResourcePerformanceEntry) => `
 <tr>
-    <td>${entry.name}</td>
+    <td>${entry.name.substring(entry.name.lastIndexOf("/") + 1).substring(0, 60)}</td>
     <td>${entry.encodedBodySize}</td>
     <td>${entry.decodedBodySize}</td>
     <td>${entry.transferSize}</td>
-    <td>${entry.startTime}</td>
-    <td>${entry.duration}</td>
+    <td>${Formatter.duration(entry.startTime, 0)} ms</td>
+    <td>${Formatter.duration(entry.duration, 0)} ms</td>
     <td>${Formatter.duration(entry.responseStart, entry.fetchStart)} ms</td>
 </tr>
 `).join("");
@@ -119,7 +120,7 @@ export class ResourceTimingsPanel implements IPanel {
         <th>Bytes Over Wire</th>
         <th>Start</th>
         <th>Duration</th>
-        <td>Time To First Byte</td>
+        <th>Time To First Byte</th>
     </tr>
     ${rows}
 </table>`;
@@ -145,6 +146,27 @@ export class ResourceTimingsPanel implements IPanel {
                 numFiles: 0,
                 largestBytes: 0,
             },
+            {
+                format: "XHR",
+                decodedBytes: 0,
+                overWireBytes: 0,
+                numFiles: 0,
+                largestBytes: 0,
+            },
+            {
+                format: "JS",
+                decodedBytes: 0,
+                overWireBytes: 0,
+                numFiles: 0,
+                largestBytes: 0,
+            },
+            {
+                format: "CSS",
+                decodedBytes: 0,
+                overWireBytes: 0,
+                numFiles: 0,
+                largestBytes: 0,
+            },
         ];
 
         const entries: IResourcePerformanceEntry[] = this.config.performance.getEntriesByType("resource") as IResourcePerformanceEntry[];
@@ -158,10 +180,10 @@ export class ResourceTimingsPanel implements IPanel {
         const rows: string = obj.map((row: SummaryRow): string => `
 <tr>
     <td>${row.format}</td>
-    <td>${row.decodedBytes}</td>
-    <td>${row.overWireBytes}</td>
+    <td>${row.decodedBytes.toLocaleString()} bytes</td>
+    <td>${row.overWireBytes.toLocaleString()} bytes</td>
     <td>${row.numFiles}</td>
-    <td>${row.largestBytes}</td>
+    <td>${row.largestBytes.toLocaleString()} bytes</td>
 </tr>`).join("");
 
         return `
