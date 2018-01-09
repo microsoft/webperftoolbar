@@ -31,10 +31,6 @@
                 config: {
                     goalMs: 25
                 }
-            },
-            {
-                panel: PerfToolbar.ResourceTimingsPanel,
-                config: {}
             }
             /** End configuration */
         ])).render();
