@@ -3,14 +3,6 @@ import * as Formatter from "../formatter";
 import { IPanel, IPanelConfig } from "../ipanel";
 import { PanelFrame } from "../panelframe";
 
-/** begin types from https://github.com/Microsoft/TypeScript/issues/15012 */
-type Required<T> = {
-    [P in Purify<keyof T>]: NonNullable<T[P]>;
-  };
-type Purify<T extends string> = { [P in T]: T; }[T];
-type NonNullable<T> = T & {};
-/** end types from https://github.com/Microsoft/TypeScript/issues/15012 */
-
 /** Describes the configuration options available for the network panel */
 export interface IResourceTimingsPanelConfig extends IPanelConfig {
     /**
@@ -18,19 +10,6 @@ export interface IResourceTimingsPanelConfig extends IPanelConfig {
      * This pane only requires the getEntriesByType method
      */
     performance: Partial<Performance> & Required<{ getEntriesByType(entryType: string): {} }>;
-}
-
-type InitiatorType = "link" | "script" | "img" | "iframe" | "css" | "navigation" | "xmlhttprequest" | "fetch" | "beacon" | "other";
-
-/**
- * Finish the typings for a file gotten by `performance.getEntriesByType("resource")`
- */
-interface IResourcePerformanceEntry extends PerformanceEntry, PerformanceResourceTiming {
-    decodedBodySize: number;
-    encodedBodySize: number;
-    // Values from https://w3c.github.io/resource-timing/#dom-performanceresourcetiming-initiatortype
-    initiatorType: InitiatorType;
-    transferSize: number;
 }
 
 /** A set of default configuration options for the Resource timings panel */
@@ -119,10 +98,9 @@ export class ResourceTimingsPanel implements IPanel {
      */
     private getDetailTable(): string {
         const entries: IResourcePerformanceEntry[] = this.config.performance.getEntriesByType("resource") as IResourcePerformanceEntry[];
-    // tslint:disable:no-magic-numbers align
-    const rows: string = entries.map((entry: IResourcePerformanceEntry) => `
+        const rows: string = entries.map((entry: IResourcePerformanceEntry) => `
 <tr>
-    <td>${entry.name.substring(entry.name.lastIndexOf("/") + 1).substring(0, 60) /* TODO: This should be cleaner */}</td>
+    <td title="${entry.name}">${Formatter.pathToFilename(entry.name)}</td>
     <td>${entry.encodedBodySize.toLocaleString()} bytes</td>
     <td>${entry.decodedBodySize.toLocaleString()}</td>
     <td>${entry.transferSize.toLocaleString()}</td>
