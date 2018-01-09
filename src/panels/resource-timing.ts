@@ -20,14 +20,16 @@ export interface IResourceTimingsPanelConfig extends IPanelConfig {
     performance: Partial<Performance> & Required<{ getEntriesByType(entryType: string): {} }>;
 }
 
+type InitiatorType = "link" | "script" | "img" | "iframe" | "css" | "navigation" | "xmlhttprequest" | "fetch" | "beacon" | "other";
+
 /**
  * Finish the typings for a file gotten by `performance.getEntriesByType("resource")`
  */
-interface IResourcePerformanceEntry extends PerformanceEntry {
+interface IResourcePerformanceEntry extends PerformanceEntry, PerformanceResourceTiming {
     decodedBodySize: number;
     encodedBodySize: number;
-    fetchStart: number;
-    responseStart: number;
+    // Values from https://w3c.github.io/resource-timing/#dom-performanceresourcetiming-initiatortype
+    initiatorType: InitiatorType;
     transferSize: number;
 }
 
@@ -36,8 +38,27 @@ const resourceTimingsPanelDefaultConfig: IResourceTimingsPanelConfig = {
     performance: window.performance,
 };
 
+enum INITIATOR_TYPES {
+    all,
+    other,
+    link,
+    script,
+    img,
+    css,
+    iframe,
+    xmlhttprequest,
+}
+
+type SummaryRow = {
+    decodedBytes: number;
+    format: "All" | InitiatorType;
+    largestBytes: number;
+    numFiles: number;
+    overWireBytes: number;
+};
+
 /**
- * Provides a panel that shows the Resource timings for a page
+ * Provides a panel that shows the Resource timings for a page.
  */
 export class ResourceTimingsPanel implements IPanel {
     /** The name of the panel */
@@ -101,13 +122,14 @@ export class ResourceTimingsPanel implements IPanel {
     // tslint:disable:no-magic-numbers align
     const rows: string = entries.map((entry: IResourcePerformanceEntry) => `
 <tr>
-    <td>${entry.name.substring(entry.name.lastIndexOf("/") + 1).substring(0, 60)}</td>
-    <td>${entry.encodedBodySize}</td>
-    <td>${entry.decodedBodySize}</td>
-    <td>${entry.transferSize}</td>
+    <td>${entry.name.substring(entry.name.lastIndexOf("/") + 1).substring(0, 60) /* TODO: This should be cleaner */}</td>
+    <td>${entry.encodedBodySize.toLocaleString()} bytes</td>
+    <td>${entry.decodedBodySize.toLocaleString()}</td>
+    <td>${entry.transferSize.toLocaleString()}</td>
     <td>${Formatter.duration(entry.startTime, 0)} ms</td>
     <td>${Formatter.duration(entry.duration, 0)} ms</td>
     <td>${Formatter.duration(entry.responseStart, entry.fetchStart)} ms</td>
+    <td>${entry.initiatorType}</td>
 </tr>
 `).join("");
 
@@ -130,54 +152,10 @@ export class ResourceTimingsPanel implements IPanel {
      * Gets the summary table.
      */
     private getSummaryTable(): string {
-        type SummaryRow = {
-            decodedBytes: number;
-            format: "XHR" | "JS" | "CSS" | "Img" | "Media" | "Font" | "Other" | "All";
-            largestBytes: number;
-            numFiles: number;
-            overWireBytes: number;
-        };
+        const summaryCounts: SummaryRow[] = this.getZeroedSummaryTable();
+        this.populateSummaryTable(summaryCounts);
 
-        const obj: SummaryRow[] = [
-            {
-                format: "All",
-                decodedBytes: 0,
-                overWireBytes: 0,
-                numFiles: 0,
-                largestBytes: 0,
-            },
-            {
-                format: "XHR",
-                decodedBytes: 0,
-                overWireBytes: 0,
-                numFiles: 0,
-                largestBytes: 0,
-            },
-            {
-                format: "JS",
-                decodedBytes: 0,
-                overWireBytes: 0,
-                numFiles: 0,
-                largestBytes: 0,
-            },
-            {
-                format: "CSS",
-                decodedBytes: 0,
-                overWireBytes: 0,
-                numFiles: 0,
-                largestBytes: 0,
-            },
-        ];
-
-        const entries: IResourcePerformanceEntry[] = this.config.performance.getEntriesByType("resource") as IResourcePerformanceEntry[];
-        for (const entry of entries) {
-            obj[0].decodedBytes += entry.decodedBodySize;
-            obj[0].overWireBytes += entry.transferSize;
-            obj[0].numFiles++;
-            obj[0].largestBytes = Math.max(entry.decodedBodySize, obj[0].largestBytes);
-        }
-
-        const rows: string = obj.map((row: SummaryRow): string => `
+        const rows: string = summaryCounts.map((row: SummaryRow): string => `
 <tr>
     <td>${row.format}</td>
     <td>${row.decodedBytes.toLocaleString()} bytes</td>
@@ -197,5 +175,61 @@ export class ResourceTimingsPanel implements IPanel {
     </tr>
     ${rows}
 </table>`;
+    }
+
+    /**
+     * Gets a summary table with default zeroed values.
+     */
+    private getZeroedSummaryTable(): SummaryRow[] {
+        const zeroValues: { decodedBytes: number; largestBytes: number; numFiles: number; overWireBytes: number } = {
+            decodedBytes: 0,
+            overWireBytes: 0,
+            numFiles: 0,
+            largestBytes: 0,
+        };
+
+        const summaryCounts: SummaryRow[] = new Array(8);
+        summaryCounts[INITIATOR_TYPES.all] = { format: "All", ...zeroValues };
+        summaryCounts[INITIATOR_TYPES.other] = { format: "other", ...zeroValues };
+        summaryCounts[INITIATOR_TYPES.link] = { format: "link", ...zeroValues };
+        summaryCounts[INITIATOR_TYPES.script] = { format: "script", ...zeroValues };
+        summaryCounts[INITIATOR_TYPES.img] = { format: "img", ...zeroValues };
+        summaryCounts[INITIATOR_TYPES.css] = { format: "css", ...zeroValues };
+        summaryCounts[INITIATOR_TYPES.iframe] = { format: "iframe", ...zeroValues };
+        summaryCounts[INITIATOR_TYPES.xmlhttprequest] = { format: "xmlhttprequest", ...zeroValues };
+
+        return summaryCounts;
+    }
+
+    /**
+     * Increments a row in the summary table.
+     * @param row The row to increment.
+     * @param entry The entry with values that we increment by.
+     */
+    private incrementCount(row: SummaryRow, entry: IResourcePerformanceEntry): void {
+        row.decodedBytes += entry.decodedBodySize;
+        row.overWireBytes += entry.transferSize;
+        row.numFiles++;
+        row.largestBytes = Math.max(entry.decodedBodySize, row.largestBytes);
+    }
+
+    /**
+     * Fills a table of summary rows by looping over all of the resource performance entires.
+     * @param summaryCounts The table to be filled.
+     */
+    private populateSummaryTable(summaryCounts: SummaryRow[]): void {
+        const entries: IResourcePerformanceEntry[] = this.config.performance.getEntriesByType("resource") as IResourcePerformanceEntry[];
+        for (const entry of entries) {
+            // Add to the All count
+            this.incrementCount(summaryCounts[INITIATOR_TYPES.all], entry);
+
+            const index: number = INITIATOR_TYPES[entry.initiatorType as keyof typeof INITIATOR_TYPES];
+
+            if (index as number | undefined !== undefined) {
+                this.incrementCount(summaryCounts[index], entry);
+            } else {
+                this.incrementCount(summaryCounts[INITIATOR_TYPES.other], entry);
+            }
+        }
     }
 }

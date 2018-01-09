@@ -14,5 +14,12 @@ export const duration: (end: number, start: number, decimalPlaces?: number) => s
             return "-";
         }
 
-        return (end - start).toFixed(decimalPlaces);
+        if (end - start < 0) {
+            return "-";
+        }
+
+        return (end - start).toLocaleString(undefined, {
+            minimumFractionDigits: decimalPlaces,
+            maximumFractionDigits: decimalPlaces,
+        });
     };
