@@ -13,11 +13,10 @@ export const MAX_FILE_NAME_LENGTH: number = 60;
  */
 export const duration: (end: number, start: number, decimalPlaces?: number) => string =
     (end: number, start: number, decimalPlaces: number = DECIMAL_PLACES): string => {
-        if (isNaN(end) || isNaN(start)) {
-            return "-";
-        }
-
-        if (end - start < 0) {
+        if (isNaN(end) ||
+            isNaN(start) ||
+            (end - start < 0) ||
+            (end === 0 && start === 0)) {
             return "-";
         }
 
@@ -41,4 +40,36 @@ export const pathToFilename: (path: string, maxLength?: number) => string =
         }
 
         return trimmed;
+    };
+
+type AllowableUnits = "b" | "Kb" | "Mb";
+
+const LOCALE_STRING_DECIMAL_PLACES: { maximumFractionDigits: number; minimumFractionDigits: number } = {
+    minimumFractionDigits: DECIMAL_PLACES,
+    maximumFractionDigits: DECIMAL_PLACES,
+};
+
+/**
+ * Converts a size in bytes to another size, with a unit.
+ * @param bytes The size in bytes.
+ * @param unit The desired unit to conver to.
+ */
+export const sizeToString: (bytes: number, unit?: AllowableUnits) => string =
+    (bytes: number, unit: AllowableUnits = "Kb"): string => {
+        const twoExpTen: number = 1024;
+
+        if (bytes === 0) {
+            return "-";
+        }
+
+        switch (unit) {
+            case "b":
+                return `${bytes.toLocaleString(undefined, LOCALE_STRING_DECIMAL_PLACES)} b`;
+            case "Kb":
+                return `${(bytes / twoExpTen).toLocaleString(undefined, LOCALE_STRING_DECIMAL_PLACES)} Kb`;
+            case "Mb":
+                return `${(bytes / (twoExpTen * twoExpTen)).toLocaleString(undefined, LOCALE_STRING_DECIMAL_PLACES)} Mb`;
+            default:
+                throw new Error("unknown unit");
+        }
     };

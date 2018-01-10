@@ -27,9 +27,6 @@ export class PanelFrame {
             panel.render(this.frame);
             this.toolbarRoot.appendChild(this.frame);
         } else {
-            if (this.frame.parentElement !== null) {
-                this.frame.parentElement.removeAttribute("style");
-            }
             this.frame.parentNode.removeChild(this.frame);
         }
     }

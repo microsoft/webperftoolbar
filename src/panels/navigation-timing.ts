@@ -42,6 +42,7 @@ export class NavigationTimingsPanel implements IPanel {
     public getButtons(): Button[] {
         return [new Button({
             parent: this,
+            title: "Duration from navigation to end of load event",
             emoji: "⏱️",
             getValue: (): string => `${Formatter.duration(this.config.timings.loadEventEnd, this.config.timings.navigationStart)} ms`,
             getColor: (): string => this.config.timings.loadEventEnd - this.config.timings.navigationStart <= this.config.goalMs ? "green" : "red",
@@ -55,7 +56,7 @@ export class NavigationTimingsPanel implements IPanel {
     public render(target: HTMLElement): void {
         const t: PerformanceTiming = this.config.timings;
 
-        target.innerHTML = `
+        target.innerHTML = `<h1>${this.name}</h1>
 <table>
     <tr>
         <th>Get Connected</th>

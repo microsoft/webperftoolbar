@@ -28,6 +28,9 @@ enum INITIATOR_TYPES {
     xmlhttprequest,
 }
 
+/**
+ * Describes a row in the summary table
+ */
 type SummaryRow = {
     decodedBytes: number;
     format: "All" | InitiatorType;
@@ -59,19 +62,22 @@ export class ResourceTimingsPanel implements IPanel {
      * @see IPanel.getButtons
      */
     public getButtons(): Button[] {
+        const summaryCounts: SummaryRow[] = this.getZeroedSummaryTable();
+        this.populateSummaryTable(summaryCounts);
+
         return [
             new Button({
                 parent: this,
-                emoji: "📦️",
-                getValue: (): string => `${(this.config.performance.getEntriesByType("resource") as IResourcePerformanceEntry[])
-                    .map((entry: IResourcePerformanceEntry): number => entry.transferSize)
-                    .reduce((prev: number, current: number): number => prev + current, 0).toLocaleString()} bytes`,
-                getColor: (): string => "#9999FF",
+                title: "Total bytes over wire",
+                emoji: "🔌",
+                getValue: (): string => `${Formatter.sizeToString(summaryCounts[INITIATOR_TYPES.all].overWireBytes, "Kb")}`,
+                getColor: (): string => "white",
             }),
             new Button({
                 parent: this,
+                title: "Image bytes over wire",
                 emoji: "🖼️",
-                getValue: (): string => "0 kb",
+                getValue: (): string => `${Formatter.sizeToString(summaryCounts[INITIATOR_TYPES.img].overWireBytes, "Kb")}`,
                 getColor: (): string => "white",
             }),
         ];
@@ -82,8 +88,9 @@ export class ResourceTimingsPanel implements IPanel {
      * @see IPanel.render
      */
     public render(target: HTMLElement): void {
-        target.style.width = "80%";
-        target.innerHTML = this.getSummaryTable() + this.getDetailTable();
+        target.innerHTML = `<h1>${this.name}</h1>
+            ${this.getSummaryTable()}
+            ${this.getDetailTable()}`;
     }
 
     /**
@@ -100,25 +107,22 @@ export class ResourceTimingsPanel implements IPanel {
         const entries: IResourcePerformanceEntry[] = this.config.performance.getEntriesByType("resource") as IResourcePerformanceEntry[];
         const rows: string = entries.map((entry: IResourcePerformanceEntry) => `
 <tr>
-    <td title="${entry.name}">${Formatter.pathToFilename(entry.name)}</td>
-    <td>${entry.encodedBodySize.toLocaleString()} bytes</td>
-    <td>${entry.decodedBodySize.toLocaleString()}</td>
-    <td>${entry.transferSize.toLocaleString()}</td>
-    <td>${Formatter.duration(entry.startTime, 0)} ms</td>
-    <td>${Formatter.duration(entry.duration, 0)} ms</td>
-    <td>${Formatter.duration(entry.responseStart, entry.fetchStart)} ms</td>
     <td>${entry.initiatorType}</td>
+    <td title="${entry.name}">${Formatter.pathToFilename(entry.name)}</td>
+    <td class="numeric">${Formatter.sizeToString(entry.transferSize)}</td>
+    <td class="numeric">${Formatter.sizeToString(entry.decodedBodySize)}</td>
+    <td class="numeric">${Formatter.duration(entry.duration, 0)} ms</td>
+    <td class="numeric">${Formatter.duration(entry.responseStart, entry.fetchStart)} ms</td>
 </tr>
 `).join("");
 
         return `
 <table>
     <tr>
+        <th>Initiated By</th>
         <th>Path</th>
-        <th>Compressed Size</th>
-        <th>Actual Size</th>
         <th>Bytes Over Wire</th>
-        <th>Start</th>
+        <th>Actual Size</th>
         <th>Duration</th>
         <th>Time To First Byte</th>
     </tr>
@@ -136,10 +140,10 @@ export class ResourceTimingsPanel implements IPanel {
         const rows: string = summaryCounts.map((row: SummaryRow): string => `
 <tr>
     <td>${row.format}</td>
-    <td>${row.decodedBytes.toLocaleString()} bytes</td>
-    <td>${row.overWireBytes.toLocaleString()} bytes</td>
-    <td>${row.numFiles}</td>
-    <td>${row.largestBytes.toLocaleString()} bytes</td>
+    <td class="numeric">${Formatter.sizeToString(row.decodedBytes)}</td>
+    <td class="numeric">${Formatter.sizeToString(row.overWireBytes)}</td>
+    <td class="numeric">${row.numFiles}</td>
+    <td class="numeric">${Formatter.sizeToString(row.largestBytes)}</td>
 </tr>`).join("");
 
         return `
@@ -166,7 +170,8 @@ export class ResourceTimingsPanel implements IPanel {
             largestBytes: 0,
         };
 
-        const summaryCounts: SummaryRow[] = new Array(8);
+        const numberOfSummaries: number = 8;
+        const summaryCounts: SummaryRow[] = new Array(numberOfSummaries);
         summaryCounts[INITIATOR_TYPES.all] = { format: "All", ...zeroValues };
         summaryCounts[INITIATOR_TYPES.other] = { format: "other", ...zeroValues };
         summaryCounts[INITIATOR_TYPES.link] = { format: "link", ...zeroValues };
