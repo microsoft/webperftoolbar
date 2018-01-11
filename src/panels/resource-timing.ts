@@ -66,21 +66,39 @@ export class ResourceTimingsPanel implements IPanel {
         this.populateSummaryTable(summaryCounts);
 
         return [
-            new Button({
-                parent: this,
-                title: "Total bytes over wire",
-                emoji: "🔌",
-                getValue: (): string => `${Formatter.sizeToString(summaryCounts[INITIATOR_TYPES.all].overWireBytes, "Kb")}`,
-                getColor: (): string => "white",
-            }),
-            new Button({
-                parent: this,
-                title: "Image bytes over wire",
-                emoji: "🖼️",
-                getValue: (): string => `${Formatter.sizeToString(summaryCounts[INITIATOR_TYPES.img].overWireBytes, "Kb")}`,
-                getColor: (): string => "white",
-            }),
+            this.getBytesOverWireButton(summaryCounts),
+            this.getImageBytesOverWireButton(summaryCounts),
         ];
+    }
+
+    public getBytesOverWireButton(summaryCounts: SummaryRow[]): Button {
+        return new Button({
+            parent: this,
+            title: "Total bytes over wire",
+            emoji: "🔌",
+            getValue: (): string => `${Formatter.sizeToString(summaryCounts[INITIATOR_TYPES.all].overWireBytes, "Kb")}`,
+            getColor: (): string => "white",
+        });
+    }
+
+    public getImageBytesOverWireButton(summaryCounts: SummaryRow[]): Button {
+        return new Button({
+            parent: this,
+            title: "Image bytes over wire",
+            emoji: "🖼️",
+            getValue: (): string => `${Formatter.sizeToString(summaryCounts[INITIATOR_TYPES.img].overWireBytes, "Kb")}`,
+            getColor: (): string => "white",
+        });
+    }
+
+    /**
+     * Get the summarized resource data as an array of rows.
+     */
+    public getSummaryCounts(): SummaryRow[] {
+        const summaryCounts: SummaryRow[] = this.getZeroedSummaryTable();
+        this.populateSummaryTable(summaryCounts);
+
+        return summaryCounts;
     }
 
     /**
@@ -89,7 +107,7 @@ export class ResourceTimingsPanel implements IPanel {
      */
     public render(target: HTMLElement): void {
         target.innerHTML = `<h1>${this.name}</h1>
-            ${this.getSummaryTable()}
+            ${this.getSummaryTable(this.getSummaryCounts())}
             ${this.getDetailTable()}`;
     }
 
@@ -132,11 +150,9 @@ export class ResourceTimingsPanel implements IPanel {
 
     /**
      * Gets the summary table.
+     * @param summaryCounts An array of summaries data.
      */
-    private getSummaryTable(): string {
-        const summaryCounts: SummaryRow[] = this.getZeroedSummaryTable();
-        this.populateSummaryTable(summaryCounts);
-
+    private getSummaryTable(summaryCounts: SummaryRow[]): string {
         const rows: string = summaryCounts.map((row: SummaryRow): string => `
 <tr>
     <td>${row.format}</td>
