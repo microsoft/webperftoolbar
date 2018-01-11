@@ -10,6 +10,7 @@ describe("Button class", () => {
         const button: Button = new Button();
         button.render(container);
 
+        expect(button.title).to.equal("");
         expect(button.emoji).to.equal("");
         expect(button.getValue()).to.equal("");
         expect(button.getColor()).to.equal("");
@@ -48,5 +49,17 @@ describe("Button class", () => {
 
         expect(container.firstElementChild.getAttribute("style"))
             .to.match(/red(;)?$/, "We expect the color to red");
+    });
+
+    it("should render the title as a title attribute", () => {
+        const container: HTMLElement = document.createElement("ul");
+        const config: IButtonConfiguration = {
+            title: "TITLE",
+        };
+        const button: Button = new Button(config);
+
+        button.render(container);
+
+        expect(container.firstElementChild.getAttribute("title")).to.equal("TITLE");
     });
 });
