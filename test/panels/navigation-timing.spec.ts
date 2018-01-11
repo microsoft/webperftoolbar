@@ -3,7 +3,6 @@ import "mocha";
 import * as sinon from "sinon";
 
 import { Button } from "../../src/button";
-import { PanelConfigMerger } from "../../src/panelconfigmerger";
 import { PanelFrame } from "../../src/panelframe";
 import { NavigationTimingsPanel } from "../../src/panels/navigation-timing";
 
