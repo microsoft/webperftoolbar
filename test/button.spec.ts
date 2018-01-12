@@ -1,7 +1,6 @@
-import { assert, expect } from "chai";
+import { expect } from "chai";
 import "mocha";
 import { Button, IButtonConfiguration } from "../src/button";
-import { Toolbar } from "../src/toolbar";
 
 describe("Button class", () => {
 
@@ -34,6 +33,10 @@ describe("Button class", () => {
 
         button.render(container);
 
+        if (container.firstElementChild === null) {
+            throw new Error("Not in DOM");
+        }
+
         expect(container.firstElementChild.innerHTML)
             .equals("EMOJI VALUE", "We expect the button to show the label and value we set");
     });
@@ -47,6 +50,10 @@ describe("Button class", () => {
 
         button.render(container);
 
+        if (container.firstElementChild === null) {
+            throw new Error("Not in DOM");
+        }
+
         expect(container.firstElementChild.getAttribute("style"))
             .to.match(/red(;)?$/, "We expect the color to red");
     });
@@ -59,6 +66,10 @@ describe("Button class", () => {
         const button: Button = new Button(config);
 
         button.render(container);
+
+        if (container.firstElementChild === null) {
+            throw new Error("Not in DOM");
+        }
 
         expect(container.firstElementChild.getAttribute("title")).to.equal("TITLE");
     });

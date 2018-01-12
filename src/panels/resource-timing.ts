@@ -17,7 +17,7 @@ const resourceTimingsPanelDefaultConfig: IResourceTimingsPanelConfig = {
     performance: window.performance,
 };
 
-enum INITIATOR_TYPES {
+export enum INITIATOR_TYPES {
     all,
     other,
     link,
@@ -31,13 +31,57 @@ enum INITIATOR_TYPES {
 /**
  * Describes a row in the summary table
  */
-type SummaryRow = {
+export type SummaryRow = {
     decodedBytes: number;
     format: "All" | InitiatorType;
     largestBytes: number;
     numFiles: number;
     overWireBytes: number;
 };
+
+/**
+ * Gets a summary table with default zeroed values.
+ */
+export const getZeroedSummaryTable: () => SummaryRow[] = (): SummaryRow[] => {
+    const zeroValues: SummaryRow = {
+        format: "other",
+        decodedBytes: 0,
+        overWireBytes: 0,
+        numFiles: 0,
+        largestBytes: 0,
+    };
+
+    const numberOfSummaries: number = 8;
+    const summaryCounts: SummaryRow[] = new Array(numberOfSummaries);
+    summaryCounts[INITIATOR_TYPES.all] = { ...zeroValues, format: "All" };
+    summaryCounts[INITIATOR_TYPES.other] = { ...zeroValues, format: "other" };
+    summaryCounts[INITIATOR_TYPES.link] = { ...zeroValues, format: "link" };
+    summaryCounts[INITIATOR_TYPES.script] = { ...zeroValues, format: "script" };
+    summaryCounts[INITIATOR_TYPES.img] = { ...zeroValues, format: "img" };
+    summaryCounts[INITIATOR_TYPES.css] = { ...zeroValues, format: "css" };
+    summaryCounts[INITIATOR_TYPES.iframe] = { ...zeroValues, format: "iframe" };
+    summaryCounts[INITIATOR_TYPES.xmlhttprequest] = { ...zeroValues, format: "xmlhttprequest" };
+
+    return summaryCounts;
+};
+
+export const getBytesOverWireButton: (parent: ResourceTimingsPanel | undefined, summaryCounts: SummaryRow[]) => Button =
+    (parent: ResourceTimingsPanel | undefined, summaryCounts: SummaryRow[]): Button => new Button({
+        parent,
+        title: "Total bytes over wire",
+        emoji: "🔌",
+        getValue: (): string => `${Formatter.sizeToString(summaryCounts[INITIATOR_TYPES.all].overWireBytes, "Kb")}`,
+        getColor: (): string => "white",
+    });
+
+export const getImageBytesOverWireButton: (parent: ResourceTimingsPanel | undefined, summaryCounts: SummaryRow[]) => Button =
+    (parent: ResourceTimingsPanel | undefined, summaryCounts: SummaryRow[]): Button => new Button({
+        parent,
+        title: "Image bytes over wire",
+        emoji: "🖼️",
+        getValue: (): string => `${Formatter.sizeToString(summaryCounts[INITIATOR_TYPES.img].overWireBytes, "Kb")}`,
+        getColor: (): string => "white",
+    });
 
 /**
  * Provides a panel that shows the Resource timings for a page.
@@ -52,7 +96,7 @@ export class ResourceTimingsPanel implements IPanel {
     /** The frame that displays this panel. */
     private readonly frame: PanelFrame;
 
-    public constructor(frame: PanelFrame, config?: IResourceTimingsPanelConfig) {
+    public constructor(frame: PanelFrame, config?: Partial<IResourceTimingsPanelConfig>) {
         this.frame = frame;
         this.config = { ...resourceTimingsPanelDefaultConfig, ...config };
     }
@@ -62,40 +106,20 @@ export class ResourceTimingsPanel implements IPanel {
      * @see IPanel.getButtons
      */
     public getButtons(): Button[] {
-        const summaryCounts: SummaryRow[] = this.getZeroedSummaryTable();
+        const summaryCounts: SummaryRow[] = getZeroedSummaryTable();
         this.populateSummaryTable(summaryCounts);
 
         return [
-            this.getBytesOverWireButton(summaryCounts),
-            this.getImageBytesOverWireButton(summaryCounts),
+            getBytesOverWireButton(this, summaryCounts),
+            getImageBytesOverWireButton(this, summaryCounts),
         ];
-    }
-
-    public getBytesOverWireButton(summaryCounts: SummaryRow[]): Button {
-        return new Button({
-            parent: this,
-            title: "Total bytes over wire",
-            emoji: "🔌",
-            getValue: (): string => `${Formatter.sizeToString(summaryCounts[INITIATOR_TYPES.all].overWireBytes, "Kb")}`,
-            getColor: (): string => "white",
-        });
-    }
-
-    public getImageBytesOverWireButton(summaryCounts: SummaryRow[]): Button {
-        return new Button({
-            parent: this,
-            title: "Image bytes over wire",
-            emoji: "🖼️",
-            getValue: (): string => `${Formatter.sizeToString(summaryCounts[INITIATOR_TYPES.img].overWireBytes, "Kb")}`,
-            getColor: (): string => "white",
-        });
     }
 
     /**
      * Get the summarized resource data as an array of rows.
      */
     public getSummaryCounts(): SummaryRow[] {
-        const summaryCounts: SummaryRow[] = this.getZeroedSummaryTable();
+        const summaryCounts: SummaryRow[] = getZeroedSummaryTable();
         this.populateSummaryTable(summaryCounts);
 
         return summaryCounts;
@@ -169,35 +193,10 @@ export class ResourceTimingsPanel implements IPanel {
         <th>Decoded Size</th>
         <th>Bytes Over Wire</th>
         <th>Num Files</th>
-        <th>Largest</th>
+        <th>Largest Decoded</th>
     </tr>
     ${rows}
 </table>`;
-    }
-
-    /**
-     * Gets a summary table with default zeroed values.
-     */
-    private getZeroedSummaryTable(): SummaryRow[] {
-        const zeroValues: { decodedBytes: number; largestBytes: number; numFiles: number; overWireBytes: number } = {
-            decodedBytes: 0,
-            overWireBytes: 0,
-            numFiles: 0,
-            largestBytes: 0,
-        };
-
-        const numberOfSummaries: number = 8;
-        const summaryCounts: SummaryRow[] = new Array(numberOfSummaries);
-        summaryCounts[INITIATOR_TYPES.all] = { format: "All", ...zeroValues };
-        summaryCounts[INITIATOR_TYPES.other] = { format: "other", ...zeroValues };
-        summaryCounts[INITIATOR_TYPES.link] = { format: "link", ...zeroValues };
-        summaryCounts[INITIATOR_TYPES.script] = { format: "script", ...zeroValues };
-        summaryCounts[INITIATOR_TYPES.img] = { format: "img", ...zeroValues };
-        summaryCounts[INITIATOR_TYPES.css] = { format: "css", ...zeroValues };
-        summaryCounts[INITIATOR_TYPES.iframe] = { format: "iframe", ...zeroValues };
-        summaryCounts[INITIATOR_TYPES.xmlhttprequest] = { format: "xmlhttprequest", ...zeroValues };
-
-        return summaryCounts;
     }
 
     /**

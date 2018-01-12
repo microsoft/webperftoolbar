@@ -42,8 +42,11 @@ export const pathToFilename: (path: string, maxLength?: number) => string =
         return trimmed;
     };
 
-type AllowableUnits = "b" | "Kb" | "Mb";
+type FileSizeUnits = "b" | "Kb" | "Mb";
 
+/**
+ * Simple object for passing to toLocaleString to configure the number of decimal places to display.
+ */
 const LOCALE_STRING_DECIMAL_PLACES: { maximumFractionDigits: number; minimumFractionDigits: number } = {
     minimumFractionDigits: DECIMAL_PLACES,
     maximumFractionDigits: DECIMAL_PLACES,
@@ -54,8 +57,8 @@ const LOCALE_STRING_DECIMAL_PLACES: { maximumFractionDigits: number; minimumFrac
  * @param bytes The size in bytes.
  * @param unit The desired unit to conver to.
  */
-export const sizeToString: (bytes: number, unit?: AllowableUnits) => string =
-    (bytes: number, unit: AllowableUnits = "Kb"): string => {
+export const sizeToString: (bytes: number, unit?: FileSizeUnits) => string =
+    (bytes: number, unit: FileSizeUnits = "Kb"): string => {
         const twoExpTen: number = 1024;
 
         if (bytes === 0) {

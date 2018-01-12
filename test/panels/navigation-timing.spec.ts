@@ -1,10 +1,41 @@
-import { assert, expect } from "chai";
+import { expect } from "chai";
 import "mocha";
-import * as sinon from "sinon";
 
 import { Button } from "../../src/button";
 import { PanelFrame } from "../../src/panelframe";
 import { NavigationTimingsPanel } from "../../src/panels/navigation-timing";
+
+// Provides mocked performance timings for tests
+const getMockTimings: (overrides?: Partial<PerformanceTiming>) => PerformanceTiming =
+    (overrides: Partial<PerformanceTiming> = {}): PerformanceTiming => { // tslint:disable-line:arrow-return-shorthand cyclomatic-complexity
+        const zero: PerformanceTiming = {
+            connectEnd: 0,
+            connectStart: 0,
+            domainLookupEnd: 0,
+            domainLookupStart: 0,
+            domComplete: 0,
+            domContentLoadedEventEnd: 0,
+            domContentLoadedEventStart: 0,
+            domInteractive: 0,
+            domLoading: 0,
+            fetchStart: 0,
+            loadEventEnd: 0,
+            loadEventStart: 0,
+            msFirstPaint: 0,
+            navigationStart: 0,
+            redirectEnd: 0,
+            redirectStart: 0,
+            requestStart: 0,
+            responseEnd: 0,
+            responseStart: 0,
+            secureConnectionStart: 0,
+            unloadEventEnd: 0,
+            unloadEventStart: 0,
+            toJSON: (): string => "",
+        };
+
+        return { ...zero, ...overrides };
+    };
 
 describe("Navigation timing panel class", () => {
 
@@ -73,35 +104,4 @@ describe("Navigation timing panel class", () => {
         expect(target.childElementCount).to.be.above(0, "it should render to the DOM");
 
     });
-
-    // Provides mocked performance timings for tests
-    const getMockTimings: (overrides?: Partial<PerformanceTiming>) => PerformanceTiming =
-        (overrides: Partial<PerformanceTiming> = {}): PerformanceTiming => { // tslint:disable-line:arrow-return-shorthand cyclomatic-complexity
-            return {
-                connectEnd: overrides.connectEnd || 0,
-                connectStart: overrides.connectStart || 0,
-                domainLookupEnd: overrides.domainLookupEnd || 0,
-                domainLookupStart: overrides.domainLookupStart || 0,
-                domComplete: overrides.domComplete || 0,
-                domContentLoadedEventEnd: overrides.domContentLoadedEventEnd || 0,
-                domContentLoadedEventStart: overrides.domContentLoadedEventStart || 0,
-                domInteractive: overrides.domInteractive || 0,
-                domLoading: overrides.domLoading || 0,
-                fetchStart: overrides.fetchStart || 0,
-                loadEventEnd: overrides.loadEventEnd || 0,
-                loadEventStart: overrides.loadEventStart || 0,
-                msFirstPaint: overrides.msFirstPaint || 0,
-                navigationStart: overrides.navigationStart || 0,
-                redirectEnd: overrides.redirectEnd || 0,
-                redirectStart: overrides.redirectStart || 0,
-                requestStart: overrides.requestStart || 0,
-                responseEnd: overrides.responseEnd || 0,
-                responseStart: overrides.responseStart || 0,
-                secureConnectionStart: overrides.secureConnectionStart || 0,
-                unloadEventEnd: overrides.unloadEventEnd || 0,
-                unloadEventStart: overrides.unloadEventStart || 0,
-                toJSON: (): string => "",
-            };
-        };
-
 });

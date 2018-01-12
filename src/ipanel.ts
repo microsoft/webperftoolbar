@@ -1,9 +1,9 @@
 import { Button } from "./button";
 import { PanelFrame } from "./panelframe";
 
-export interface IPanelWithConfiguration<C, P> {
+export interface IPanelWithConfiguration<C extends IPanelConfig, P extends IPanel> {
     config: C;
-    panel: IPanelConstructor<C, P>;
+    panelConstructor: IPanelConstructor<C, P>;
 }
 
 export interface IPanelConstructor<C, P> {

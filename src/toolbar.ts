@@ -22,7 +22,7 @@ export class Toolbar {
         // Construct the frame and the panels that use it
         const frame: PanelFrame = new PanelFrame(this.toolbarRoot);
         this.panels = panels.map((panelWithConfig: IPanelWithConfiguration<IPanelConfig, IPanel>): IPanel =>
-            new panelWithConfig.panel(frame, panelWithConfig.config));
+            new panelWithConfig.panelConstructor(frame, panelWithConfig.config));
     }
 
     /**

@@ -4,11 +4,17 @@
   "description": "A toolbar for monitoring web performance.",
   "main": "dist/bundle.js",
   "scripts": {
-    "test": "karma start karma.conf.js",
     "build": "webpack",
+    "test": "karma start karma.conf.js",
     "demo": "npm run build && http-server -o -c-1",
+
+    "tslint": "tslint -p .",
     "tsc-verbose": "tsc -p tsconfig.json --traceResolution true",
-    "tslint": "tslint -p ."
+
+    "test-tslint": "tslint -p test/.",
+    "test-tsc-verbose": "tsc -p test/tsconfig.json --traceResolution true",
+
+    "check": "npm run tslint && npm run test-tslint && npm run build"
   },
   "keywords": [],
   "author": "",

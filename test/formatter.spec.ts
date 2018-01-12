@@ -1,17 +1,16 @@
-import { assert, expect } from "chai";
+import { expect } from "chai";
 import "mocha";
-import * as sinon from "sinon";
 
 import * as Formatter from "../src/formatter";
 
 describe("Formatter", () => {
     describe("duration", () => {
         it("should return a dash for invalid input in the first parameter", () => {
-            expect(Formatter.duration(undefined, 0)).to.equal("-");
+            expect(Formatter.duration(undefined as any, 0)).to.equal("-"); // tslint:disable-line:no-any
         });
 
         it("should return a dash for invalid input in the second parameter", () => {
-            expect(Formatter.duration(0, undefined)).to.equal("-");
+            expect(Formatter.duration(0, undefined as any)).to.equal("-"); // tslint:disable-line:no-any
         });
 
         it("should default to two decimal places", () => {
