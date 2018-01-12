@@ -82,13 +82,13 @@
                     (new PerfToolbar.Toolbar([
                         /** Configure this to include the panels you need */
                         {
-                            panel: PerfToolbar.NavigationTimingsPanel,
+                            panelConstructor: PerfToolbar.NavigationTimingsPanel,
                             config: {
                                 goalMs: 25
                             }
                         },
                         {
-                            panel: PerfToolbar.ResourceTimingsPanel,
+                            panelConstructor: PerfToolbar.ResourceTimingsPanel,
                             config: {}
                         }
                     /** End configuration */
