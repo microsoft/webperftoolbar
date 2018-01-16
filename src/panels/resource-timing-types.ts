@@ -3,23 +3,23 @@ import { IPanelConfig } from "../ipanel";
 /** Describes the configuration for the bytes over wire button. */
 export interface IBytesOverWireButtonConfig {
     /** The emoji for the bytes over wire button. */
-    bytesOverWireButtonEmoji: string;
+    bytesOverWireButtonEmoji?: string;
     /** The title of the bytes over wire button. */
-    bytesOverWireButtonTitle: string;
+    bytesOverWireButtonTitle?: string;
 }
 
 /** Describes the configuration for the iamge bytes over wire button. */
 export interface IImageBytesOverWireButtonConfig {
     /** The emoji for the image bytes over wire button. */
-    imageBytesOverWireButtonEmoji: string;
+    imageBytesOverWireButtonEmoji?: string;
     /** The title for the image bytes over wire button. */
-    imageBytesOverWireButtonTitle: string;
+    imageBytesOverWireButtonTitle?: string;
 }
 
 /** Describes the configuration options available for the network panel */
 export interface IResourceTimingsPanelConfig extends IPanelConfig, IBytesOverWireButtonConfig, IImageBytesOverWireButtonConfig {
     /** The name of the panel */
-    panelName: string;
+    panelName?: string;
     /**
      * The global performance object, can be included in the config to enable injection of a mock object for testing.
      * This pane only requires the getEntriesByType method

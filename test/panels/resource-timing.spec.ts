@@ -4,6 +4,11 @@ import "mocha";
 import { Button } from "../../src/button";
 import { PanelFrame } from "../../src/panelframe";
 import * as rt from "../../src/panels/resource-timing";
+import {
+    InitiatorTypes,
+    IResourceTimingsPanelConfig,
+    SummaryRow,
+} from "../../src/panels/resource-timing-types";
 
 /** A resource performance entry that is basically zeroes. */
 const zeroEntry: IResourcePerformanceEntry = {
@@ -28,13 +33,13 @@ const zeroEntry: IResourcePerformanceEntry = {
 };
 
 /** Provides a short mock of the summary data that would be computed from the performance object. */
-const getMockSummaryRows: () => rt.SummaryRow[] = (): rt.SummaryRow[] => {
-    const summary: rt.SummaryRow[] = rt.getZeroedSummaryTable();
+const getMockSummaryRows: () => SummaryRow[] = (): SummaryRow[] => {
+    const summary: SummaryRow[] = rt.getZeroedSummaryTable();
     const allOverWireBytes: number = 1024;
     const imageOverWireBytes: number = 2048;
 
-    summary[rt.INITIATOR_TYPES.all].overWireBytes = allOverWireBytes;
-    summary[rt.INITIATOR_TYPES.img].overWireBytes = imageOverWireBytes;
+    summary[InitiatorTypes.all].overWireBytes = allOverWireBytes;
+    summary[InitiatorTypes.img].overWireBytes = imageOverWireBytes;
 
     return summary;
 };
@@ -83,29 +88,29 @@ describe("Resource timing panel class", () => {
     it("should summarize the performance data", () => {
         const rootElement: HTMLElement = document.createElement("div");
         const frame: PanelFrame = new PanelFrame(rootElement);
-        const config: rt.IResourceTimingsPanelConfig = {
+        const config: IResourceTimingsPanelConfig = {
             performance: {
                 getEntriesByType: (_entryType: string): IResourcePerformanceEntry[] => getMockEntries(),
             },
         };
 
         const panel: rt.ResourceTimingsPanel = new rt.ResourceTimingsPanel(frame, config);
-        const counts: rt.SummaryRow[] = panel.getSummaryCounts();
+        const counts: SummaryRow[] = panel.getSummaryCounts();
 
         /* tslint:disable:no-magic-numbers */
-        const image: rt.SummaryRow = counts[rt.INITIATOR_TYPES.img];
+        const image: SummaryRow = counts[InitiatorTypes.img];
         expect(image.decodedBytes).to.equal(3 + 7);
         expect(image.overWireBytes).to.equal(5);
         expect(image.numFiles).to.equal(2);
         expect(image.largestBytes).to.equal(7);
 
-        const link: rt.SummaryRow = counts[rt.INITIATOR_TYPES.link];
+        const link: SummaryRow = counts[InitiatorTypes.link];
         expect(link.decodedBytes).to.equal(13);
         expect(link.overWireBytes).to.equal(17);
         expect(link.numFiles).to.equal(1);
         expect(link.largestBytes).to.equal(13);
 
-        const other: rt.SummaryRow = counts[rt.INITIATOR_TYPES.other];
+        const other: SummaryRow = counts[InitiatorTypes.other];
         expect(other.decodedBytes).to.equal(0);
         expect(other.overWireBytes).to.equal(0);
         expect(other.numFiles).to.equal(0);
@@ -126,19 +131,19 @@ describe("Resource timing panel class", () => {
     });
 
     it("should have a total bytes over wire button", () => {
-        const button: Button = rt.getBytesOverWireButton(undefined, getMockSummaryRows());
+        const button: Button = rt.getBytesOverWireButton(undefined, {}, getMockSummaryRows());
 
         expect(button.getValue()).to.equal("1.00 Kb");
     });
 
     it("should have an image bytes over wire button", () => {
-        const button: Button = rt.getImageBytesOverWireButton(undefined, getMockSummaryRows());
+        const button: Button = rt.getImageBytesOverWireButton(undefined, {}, getMockSummaryRows());
 
         expect(button.getValue()).to.equal("2.00 Kb");
     });
 
     it("should have zeroes for numeric data in the zero summary table", () => {
-        const zeroed: rt.SummaryRow[] = rt.getZeroedSummaryTable();
+        const zeroed: SummaryRow[] = rt.getZeroedSummaryTable();
 
         for (const row of zeroed) {
             expect(row.decodedBytes).to.equal(0);
@@ -149,18 +154,18 @@ describe("Resource timing panel class", () => {
     });
 
     it("should have every format in the zero summary table with the right labels", () => {
-        const zeroed: rt.SummaryRow[] = rt.getZeroedSummaryTable();
+        const zeroed: SummaryRow[] = rt.getZeroedSummaryTable();
         const numObjectKeysPerEnumValue: number = 2;
-        const numEnumValues: number = Object.keys(rt.INITIATOR_TYPES).length / numObjectKeysPerEnumValue;
+        const numEnumValues: number = Object.keys(InitiatorTypes).length / numObjectKeysPerEnumValue;
 
         expect(zeroed.length).to.equal(numEnumValues);
-        expect(zeroed[rt.INITIATOR_TYPES.all].format).to.equal("All");
-        expect(zeroed[rt.INITIATOR_TYPES.other].format).to.equal("other");
-        expect(zeroed[rt.INITIATOR_TYPES.link].format).to.equal("link");
-        expect(zeroed[rt.INITIATOR_TYPES.script].format).to.equal("script");
-        expect(zeroed[rt.INITIATOR_TYPES.img].format).to.equal("img");
-        expect(zeroed[rt.INITIATOR_TYPES.css].format).to.equal("css");
-        expect(zeroed[rt.INITIATOR_TYPES.iframe].format).to.equal("iframe");
-        expect(zeroed[rt.INITIATOR_TYPES.xmlhttprequest].format).to.equal("xmlhttprequest");
+        expect(zeroed[InitiatorTypes.all].format).to.equal("All");
+        expect(zeroed[InitiatorTypes.other].format).to.equal("other");
+        expect(zeroed[InitiatorTypes.link].format).to.equal("link");
+        expect(zeroed[InitiatorTypes.script].format).to.equal("script");
+        expect(zeroed[InitiatorTypes.img].format).to.equal("img");
+        expect(zeroed[InitiatorTypes.css].format).to.equal("css");
+        expect(zeroed[InitiatorTypes.iframe].format).to.equal("iframe");
+        expect(zeroed[InitiatorTypes.xmlhttprequest].format).to.equal("xmlhttprequest");
     });
 });
