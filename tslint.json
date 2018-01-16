@@ -27,7 +27,17 @@
         "no-import-side-effect": false,
         "strict-boolean-expressions": [true, "allow-undefined-union"],
         "interface-over-type-literal": false,
-        "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"]
+        "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
+        "typedef": [
+            true,
+            "call-signature",
+            "parameter",
+            "property-declaration",
+            "variable-declaration",
+            "member-variable-declaration",
+            "object-destructuring",
+            "array-destructuring"
+        ]
     },
     "jsRules": {
         "max-line-length": {

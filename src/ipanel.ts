@@ -18,11 +18,6 @@ export interface IPanelConfig {
 /** Describes a panel within the opened toolbar. */
 export interface IPanel {
     /**
-     * The name of the panel.
-     */
-    name: string;
-
-    /**
      * Gets the buttons provided by this panel to be displayed in the collapsed toolbar.
      */
     getButtons(): Button[];

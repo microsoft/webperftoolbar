@@ -1,48 +1,29 @@
 import { Button } from "../button";
 import * as Formatter from "../formatter";
-import { IPanel, IPanelConfig } from "../ipanel";
+import { IPanel } from "../ipanel";
 import { PanelFrame } from "../panelframe";
-
-/** Describes the configuration options available for the network panel */
-export interface IResourceTimingsPanelConfig extends IPanelConfig {
-    /**
-     * The global performance object, can be included in the config to enable injection of a mock object for testing.
-     * This pane only requires the getEntriesByType method
-     */
-    performance: Partial<Performance> & Required<{ getEntriesByType(entryType: string): {} }>;
-}
+import {
+    IBytesOverWireButtonConfig,
+    IImageBytesOverWireButtonConfig,
+    InitiatorTypes,
+    IResourceTimingsPanelConfig,
+    SummaryRow,
+} from "./resource-timing-types";
 
 /** A set of default configuration options for the Resource timings panel */
 const resourceTimingsPanelDefaultConfig: IResourceTimingsPanelConfig = {
     performance: window.performance,
-};
-
-export enum INITIATOR_TYPES {
-    all,
-    other,
-    link,
-    script,
-    img,
-    css,
-    iframe,
-    xmlhttprequest,
-}
-
-/**
- * Describes a row in the summary table
- */
-export type SummaryRow = {
-    decodedBytes: number;
-    format: "All" | InitiatorType;
-    largestBytes: number;
-    numFiles: number;
-    overWireBytes: number;
+    panelName: "Resource Timings",
+    bytesOverWireButtonTitle: "Total bytes over wire",
+    bytesOverWireButtonEmoji: "🔌",
+    imageBytesOverWireButtonTitle: "Image bytes over wire",
+    imageBytesOverWireButtonEmoji: "🖼️",
 };
 
 /**
  * Gets a summary table with default zeroed values.
  */
-export const getZeroedSummaryTable: () => SummaryRow[] = (): SummaryRow[] => {
+export const getZeroedSummaryTable: () => SummaryRow[] = () => {
     const zeroValues: SummaryRow = {
         format: "other",
         decodedBytes: 0,
@@ -53,33 +34,39 @@ export const getZeroedSummaryTable: () => SummaryRow[] = (): SummaryRow[] => {
 
     const numberOfSummaries: number = 8;
     const summaryCounts: SummaryRow[] = new Array(numberOfSummaries);
-    summaryCounts[INITIATOR_TYPES.all] = { ...zeroValues, format: "All" };
-    summaryCounts[INITIATOR_TYPES.other] = { ...zeroValues, format: "other" };
-    summaryCounts[INITIATOR_TYPES.link] = { ...zeroValues, format: "link" };
-    summaryCounts[INITIATOR_TYPES.script] = { ...zeroValues, format: "script" };
-    summaryCounts[INITIATOR_TYPES.img] = { ...zeroValues, format: "img" };
-    summaryCounts[INITIATOR_TYPES.css] = { ...zeroValues, format: "css" };
-    summaryCounts[INITIATOR_TYPES.iframe] = { ...zeroValues, format: "iframe" };
-    summaryCounts[INITIATOR_TYPES.xmlhttprequest] = { ...zeroValues, format: "xmlhttprequest" };
+    summaryCounts[InitiatorTypes.all] = { ...zeroValues, format: "All" };
+    summaryCounts[InitiatorTypes.other] = { ...zeroValues, format: "other" };
+    summaryCounts[InitiatorTypes.link] = { ...zeroValues, format: "link" };
+    summaryCounts[InitiatorTypes.script] = { ...zeroValues, format: "script" };
+    summaryCounts[InitiatorTypes.img] = { ...zeroValues, format: "img" };
+    summaryCounts[InitiatorTypes.css] = { ...zeroValues, format: "css" };
+    summaryCounts[InitiatorTypes.iframe] = { ...zeroValues, format: "iframe" };
+    summaryCounts[InitiatorTypes.xmlhttprequest] = { ...zeroValues, format: "xmlhttprequest" };
 
     return summaryCounts;
 };
 
-export const getBytesOverWireButton: (parent: ResourceTimingsPanel | undefined, summaryCounts: SummaryRow[]) => Button =
-    (parent: ResourceTimingsPanel | undefined, summaryCounts: SummaryRow[]): Button => new Button({
+export const getBytesOverWireButton: (
+    parent: ResourceTimingsPanel | undefined,
+    config: IBytesOverWireButtonConfig,
+    summaryCounts: SummaryRow[],
+) => Button = (parent, config, summaryCounts) => new Button({
         parent,
-        title: "Total bytes over wire",
-        emoji: "🔌",
-        getValue: (): string => `${Formatter.sizeToString(summaryCounts[INITIATOR_TYPES.all].overWireBytes, "Kb")}`,
+        title: config.bytesOverWireButtonTitle,
+        emoji: config.bytesOverWireButtonEmoji,
+        getValue: (): string => `${Formatter.sizeToString(summaryCounts[InitiatorTypes.all].overWireBytes, "Kb")}`,
         getColor: (): string => "white",
     });
 
-export const getImageBytesOverWireButton: (parent: ResourceTimingsPanel | undefined, summaryCounts: SummaryRow[]) => Button =
-    (parent: ResourceTimingsPanel | undefined, summaryCounts: SummaryRow[]): Button => new Button({
+export const getImageBytesOverWireButton: (
+    parent: ResourceTimingsPanel | undefined,
+    config: IImageBytesOverWireButtonConfig,
+    summaryCounts: SummaryRow[],
+) => Button = (parent, config, summaryCounts) => new Button({
         parent,
-        title: "Image bytes over wire",
-        emoji: "🖼️",
-        getValue: (): string => `${Formatter.sizeToString(summaryCounts[INITIATOR_TYPES.img].overWireBytes, "Kb")}`,
+        title: config.imageBytesOverWireButtonTitle,
+        emoji: config.imageBytesOverWireButtonEmoji,
+        getValue: (): string => `${Formatter.sizeToString(summaryCounts[InitiatorTypes.img].overWireBytes, "Kb")}`,
         getColor: (): string => "white",
     });
 
@@ -87,9 +74,6 @@ export const getImageBytesOverWireButton: (parent: ResourceTimingsPanel | undefi
  * Provides a panel that shows the Resource timings for a page.
  */
 export class ResourceTimingsPanel implements IPanel {
-    /** The name of the panel */
-    public readonly name: string = "Resource Timings";
-
     /** The settings for this panel. */
     private readonly config: IResourceTimingsPanelConfig;
 
@@ -110,8 +94,8 @@ export class ResourceTimingsPanel implements IPanel {
         this.populateSummaryTable(summaryCounts);
 
         return [
-            getBytesOverWireButton(this, summaryCounts),
-            getImageBytesOverWireButton(this, summaryCounts),
+            getBytesOverWireButton(this, this.config, summaryCounts),
+            getImageBytesOverWireButton(this, this.config, summaryCounts),
         ];
     }
 
@@ -130,7 +114,7 @@ export class ResourceTimingsPanel implements IPanel {
      * @see IPanel.render
      */
     public render(target: HTMLElement): void {
-        target.innerHTML = `<h1>${this.name}</h1>
+        target.innerHTML = `<h1>${this.config.panelName}</h1>
             ${this.getSummaryTable(this.getSummaryCounts())}
             ${this.getDetailTable()}`;
     }
@@ -219,14 +203,14 @@ export class ResourceTimingsPanel implements IPanel {
         const entries: IResourcePerformanceEntry[] = this.config.performance.getEntriesByType("resource") as IResourcePerformanceEntry[];
         for (const entry of entries) {
             // Add to the All count
-            this.incrementCount(summaryCounts[INITIATOR_TYPES.all], entry);
+            this.incrementCount(summaryCounts[InitiatorTypes.all], entry);
 
-            const index: number = INITIATOR_TYPES[entry.initiatorType as keyof typeof INITIATOR_TYPES];
+            const index: number = InitiatorTypes[entry.initiatorType as keyof typeof InitiatorTypes];
 
             if (index as number | undefined !== undefined) {
                 this.incrementCount(summaryCounts[index], entry);
             } else {
-                this.incrementCount(summaryCounts[INITIATOR_TYPES.other], entry);
+                this.incrementCount(summaryCounts[InitiatorTypes.other], entry);
             }
         }
     }

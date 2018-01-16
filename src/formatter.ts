@@ -12,7 +12,7 @@ export const MAX_FILE_NAME_LENGTH: number = 60;
  * @param decimalPlaces The number of decimal places to show.
  */
 export const duration: (end: number, start: number, decimalPlaces?: number) => string =
-    (end: number, start: number, decimalPlaces: number = DECIMAL_PLACES): string => {
+    (end, start, decimalPlaces = DECIMAL_PLACES) => {
         if (isNaN(end) ||
             isNaN(start) ||
             (end - start < 0) ||
@@ -32,7 +32,7 @@ export const duration: (end: number, start: number, decimalPlaces?: number) => s
  * @param maxLength The maximum length of the returned file name, plus three characters for periods.
  */
 export const pathToFilename: (path: string, maxLength?: number) => string =
-    (path: string, maxLength: number = MAX_FILE_NAME_LENGTH): string => {
+    (path, maxLength = MAX_FILE_NAME_LENGTH) => {
         let trimmed: string = path.substring(path.lastIndexOf("/") + 1);
 
         if (trimmed.length > maxLength) {
@@ -42,7 +42,11 @@ export const pathToFilename: (path: string, maxLength?: number) => string =
         return trimmed;
     };
 
-type FileSizeUnits = "b" | "Kb" | "Mb";
+enum FileSizeUnits {
+    b,
+    Kb,
+    Mb,
+}
 
 /**
  * Simple object for passing to toLocaleString to configure the number of decimal places to display.
@@ -57,8 +61,8 @@ const LOCALE_STRING_DECIMAL_PLACES: { maximumFractionDigits: number; minimumFrac
  * @param bytes The size in bytes.
  * @param unit The desired unit to conver to.
  */
-export const sizeToString: (bytes: number, unit?: FileSizeUnits) => string =
-    (bytes: number, unit: FileSizeUnits = "Kb"): string => {
+export const sizeToString: (bytes: number, unit?: keyof typeof FileSizeUnits) => string =
+    (bytes, unit = "Kb"): string => {
         const twoExpTen: number = 1024;
 
         if (bytes === 0) {

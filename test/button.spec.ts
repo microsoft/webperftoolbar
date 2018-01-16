@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import "mocha";
 import { Button, IButtonConfiguration } from "../src/button";
+import { assertNotNull } from "./test-utilities";
 
 describe("Button class", () => {
 
@@ -33,11 +34,7 @@ describe("Button class", () => {
 
         button.render(container);
 
-        if (container.firstElementChild === null) {
-            throw new Error("Not in DOM");
-        }
-
-        expect(container.firstElementChild.innerHTML)
+        expect(assertNotNull(container.firstElementChild, "Not in DOM").innerHTML)
             .equals("EMOJI VALUE", "We expect the button to show the label and value we set");
     });
 
@@ -50,11 +47,7 @@ describe("Button class", () => {
 
         button.render(container);
 
-        if (container.firstElementChild === null) {
-            throw new Error("Not in DOM");
-        }
-
-        expect(container.firstElementChild.getAttribute("style"))
+        expect(assertNotNull(container.firstElementChild, "Not in DOM").getAttribute("style"))
             .to.match(/red(;)?$/, "We expect the color to red");
     });
 
@@ -67,10 +60,6 @@ describe("Button class", () => {
 
         button.render(container);
 
-        if (container.firstElementChild === null) {
-            throw new Error("Not in DOM");
-        }
-
-        expect(container.firstElementChild.getAttribute("title")).to.equal("TITLE");
+        expect(assertNotNull(container.firstElementChild, "Not in DOM").getAttribute("title")).to.equal("TITLE");
     });
 });
