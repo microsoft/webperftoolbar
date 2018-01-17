@@ -11,7 +11,7 @@ export const MAX_FILE_NAME_LENGTH: number = 60;
  * @param start The start timestamp
  * @param decimalPlaces The number of decimal places to show.
  */
-export const duration = (end: number, start: number, decimalPlaces?: number): string => {
+export const duration = (end: number, start: number, decimalPlaces: number = DECIMAL_PLACES): string => {
         if (isNaN(end) ||
             isNaN(start) ||
             (end - start < 0) ||
