@@ -50,7 +50,7 @@ export enum InitiatorTypes {
  */
 export type SummaryRow = {
     decodedBytes: number;
-    format: "All" | InitiatorType;
+    format: "all" | InitiatorType;
     largestBytes: number;
     numFiles: number;
     overWireBytes: number;
