@@ -10,6 +10,9 @@ export interface IButtonConfiguration {
     /** The panel that owns this button. */
     parent?: IPanel;
 
+    /** The name of the button, exposed in the title attribute for the button. */
+    title?: string;
+
     /** Gets the background color for the button. */
     getColor?(): string;
 
@@ -31,15 +34,19 @@ export class Button {
     /** The panel that provides this button. */
     public readonly parent: IPanel | undefined;
 
+    /** The name of the button, exposed in the title attribute for the button. */
+    public readonly title: string;
+
     /**
      * Create the button.
      */
     public constructor(config: IButtonConfiguration = {}) {
+        this.title = config.title !== undefined ? config.title : "";
         this.emoji = config.emoji !== undefined ? config.emoji : "";
         this.parent = config.parent;
         /* tslint:disable no-unbound-method */
-        this.getValue = config.getValue !== undefined ? config.getValue : (): string => "";
-        this.getColor = config.getColor !== undefined ? config.getColor : (): string => "";
+        this.getValue = config.getValue !== undefined ? config.getValue : () => "";
+        this.getColor = config.getColor !== undefined ? config.getColor : () => "";
         /* tslint:enable no-unbound-method */
     }
 
@@ -50,6 +57,7 @@ export class Button {
     public render(container: HTMLElement): void {
         const li: HTMLLIElement = document.createElement("li");
         li.setAttribute("style", `background-color:${this.getColor()}`);
+        li.setAttribute("title", this.title);
         li.innerText = `${this.emoji} ${this.getValue()}`;
 
         li.addEventListener("click", () => {

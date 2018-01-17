@@ -1,17 +1,16 @@
-import { assert, expect } from "chai";
+import { expect } from "chai";
 import "mocha";
-import * as sinon from "sinon";
 
-import { Button } from "../src/button";
-import { IPanel, IPanelConstructor, IPanelWithConfiguration } from "../src/ipanel";
+import { IPanel, IPanelConfig, IPanelConstructor, IPanelWithConfiguration } from "../src/ipanel";
 import { Toolbar } from "../src/toolbar";
-import { IMockPanelConfig, MockPanel, mockPanelConfig } from "./mock/panel.mock";
+import { MockPanel, mockPanelConfig } from "./mock/panel.mock";
 
 describe("Toolbar class", () => {
 
     it("should construct with no panels", () => {
         const container: HTMLElement = document.createElement("div");
         const toolbar: Toolbar = new Toolbar([], container);
+        toolbar.render();
 
         expect(container.childElementCount).to.equal(1);
     });
@@ -19,14 +18,18 @@ describe("Toolbar class", () => {
     it("can render buttons", () => {
         const container: HTMLElement = document.createElement("div");
 
-        const mockPanelWithConfig: IPanelWithConfiguration<IMockPanelConfig, MockPanel> = {
-            panel: MockPanel,
-            config: mockPanelConfig,
+        const mockPanelWithConfig: IPanelWithConfiguration<IPanelConfig, IPanel> = {
+            config: mockPanelConfig as IPanelConfig,
+            panelConstructor: MockPanel as any as IPanelConstructor<IPanelConfig, IPanel>, // tslint:disable-line:no-any
         };
 
         const toolbar: Toolbar = new Toolbar([mockPanelWithConfig], container);
 
         toolbar.render();
+
+        if (container.firstElementChild === null) {
+            throw new Error("DOM was not set up properly");
+        }
 
         const expectedList: Element = container.firstElementChild.children.item(0);
         expect(expectedList).instanceof(HTMLUListElement, "We expect the toolbar to be a list");

@@ -5,8 +5,14 @@ import { PanelFrame } from "../panelframe";
 
 /** Describes the configuration options available for the network panel */
 export interface INavigationTimingsPanelConfig extends IPanelConfig {
+    /** The emoji for the button */
+    buttonEmoji?: string;
+    /** The title for the button */
+    buttonTitle?: string;
     /** The goal for the load duration */
     goalMs: number;
+    /** The name of the panel */
+    panelName?: string;
     /** The performance timing object, can be included in the config to enable injection of a mock object for testing */
     timings: PerformanceTiming;
 }
@@ -15,14 +21,15 @@ export interface INavigationTimingsPanelConfig extends IPanelConfig {
 const navigationTimingsPanelDefaultConfig: INavigationTimingsPanelConfig = {
     goalMs: 500,
     timings: performance.timing,
+    panelName: "Navigation Timings",
+    buttonTitle: "Duration from navigation to end of load event",
+    buttonEmoji: "⏱️",
 };
 
 /**
  * Provides a panel that shows the navigation timings for a page
  */
 export class NavigationTimingsPanel implements IPanel {
-    /** The name of the panel */
-    public readonly name: string = "Navigation Timings";
 
     /** The settings for this panel. */
     private readonly config: INavigationTimingsPanelConfig;
@@ -42,9 +49,10 @@ export class NavigationTimingsPanel implements IPanel {
     public getButtons(): Button[] {
         return [new Button({
             parent: this,
-            emoji: "⏱️",
-            getValue: (): string => `${Formatter.duration(this.config.timings.loadEventEnd, this.config.timings.navigationStart)} ms`,
-            getColor: (): string => this.config.timings.loadEventEnd - this.config.timings.navigationStart <= this.config.goalMs ? "green" : "red",
+            title: this.config.buttonTitle,
+            emoji: this.config.buttonEmoji,
+            getValue: () => `${Formatter.duration(this.config.timings.loadEventEnd, this.config.timings.navigationStart)} ms`,
+            getColor: () => this.config.timings.loadEventEnd - this.config.timings.navigationStart <= this.config.goalMs ? "green" : "red",
         })];
     }
 
@@ -55,7 +63,7 @@ export class NavigationTimingsPanel implements IPanel {
     public render(target: HTMLElement): void {
         const t: PerformanceTiming = this.config.timings;
 
-        target.innerHTML = `
+        target.innerHTML = `<h1>${this.config.panelName}</h1>
 <table>
     <tr>
         <th>Get Connected</th>

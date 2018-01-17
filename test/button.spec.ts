@@ -1,7 +1,7 @@
-import { assert, expect } from "chai";
+import { expect } from "chai";
 import "mocha";
 import { Button, IButtonConfiguration } from "../src/button";
-import { Toolbar } from "../src/toolbar";
+import { assertNotNull } from "./test-utilities";
 
 describe("Button class", () => {
 
@@ -10,6 +10,7 @@ describe("Button class", () => {
         const button: Button = new Button();
         button.render(container);
 
+        expect(button.title).to.equal("");
         expect(button.emoji).to.equal("");
         expect(button.getValue()).to.equal("");
         expect(button.getColor()).to.equal("");
@@ -33,7 +34,7 @@ describe("Button class", () => {
 
         button.render(container);
 
-        expect(container.firstElementChild.innerHTML)
+        expect(assertNotNull(container.firstElementChild, "Not in DOM").innerHTML)
             .equals("EMOJI VALUE", "We expect the button to show the label and value we set");
     });
 
@@ -46,7 +47,19 @@ describe("Button class", () => {
 
         button.render(container);
 
-        expect(container.firstElementChild.getAttribute("style"))
+        expect(assertNotNull(container.firstElementChild, "Not in DOM").getAttribute("style"))
             .to.match(/red(;)?$/, "We expect the color to red");
+    });
+
+    it("should render the title as a title attribute", () => {
+        const container: HTMLElement = document.createElement("ul");
+        const config: IButtonConfiguration = {
+            title: "TITLE",
+        };
+        const button: Button = new Button(config);
+
+        button.render(container);
+
+        expect(assertNotNull(container.firstElementChild, "Not in DOM").getAttribute("title")).to.equal("TITLE");
     });
 });

@@ -4,3 +4,4 @@ dist/
 *.js.map
 *.d.ts
 !injectDemoToolbar.user.js
+!commontypes.d.ts
