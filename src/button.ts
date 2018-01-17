@@ -45,8 +45,8 @@ export class Button {
         this.emoji = config.emoji !== undefined ? config.emoji : "";
         this.parent = config.parent;
         /* tslint:disable no-unbound-method */
-        this.getValue = config.getValue !== undefined ? config.getValue : (): string => "";
-        this.getColor = config.getColor !== undefined ? config.getColor : (): string => "";
+        this.getValue = config.getValue !== undefined ? config.getValue : () => "";
+        this.getColor = config.getColor !== undefined ? config.getColor : () => "";
         /* tslint:enable no-unbound-method */
     }
 

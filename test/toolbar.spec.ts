@@ -19,8 +19,8 @@ describe("Toolbar class", () => {
         const container: HTMLElement = document.createElement("div");
 
         const mockPanelWithConfig: IPanelWithConfiguration<IPanelConfig, IPanel> = {
-            config: mockPanelConfig,
-            panelConstructor: MockPanel as IPanelConstructor<IPanelConfig, IPanel>,
+            config: mockPanelConfig as IPanelConfig,
+            panelConstructor: MockPanel as any as IPanelConstructor<IPanelConfig, IPanel>, // tslint:disable-line:no-any
         };
 
         const toolbar: Toolbar = new Toolbar([mockPanelWithConfig], container);

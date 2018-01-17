@@ -23,7 +23,7 @@ const resourceTimingsPanelDefaultConfig: IResourceTimingsPanelConfig = {
 /**
  * Gets a summary table with default zeroed values.
  */
-export const getZeroedSummaryTable: () => SummaryRow[] = () => {
+export const getZeroedSummaryTable = (): SummaryRow[] => {
     const zeroValues: SummaryRow = {
         format: "other",
         decodedBytes: 0,
@@ -46,11 +46,11 @@ export const getZeroedSummaryTable: () => SummaryRow[] = () => {
     return summaryCounts;
 };
 
-export const getBytesOverWireButton: (
+export const getBytesOverWireButton = (
     parent: ResourceTimingsPanel | undefined,
     config: IBytesOverWireButtonConfig,
     summaryCounts: SummaryRow[],
-) => Button = (parent, config, summaryCounts) => new Button({
+) => new Button({
         parent,
         title: config.bytesOverWireButtonTitle,
         emoji: config.bytesOverWireButtonEmoji,
@@ -58,11 +58,11 @@ export const getBytesOverWireButton: (
         getColor: (): string => "white",
     });
 
-export const getImageBytesOverWireButton: (
+export const getImageBytesOverWireButton = (
     parent: ResourceTimingsPanel | undefined,
     config: IImageBytesOverWireButtonConfig,
     summaryCounts: SummaryRow[],
-) => Button = (parent, config, summaryCounts) => new Button({
+) => new Button({
         parent,
         title: config.imageBytesOverWireButtonTitle,
         emoji: config.imageBytesOverWireButtonEmoji,

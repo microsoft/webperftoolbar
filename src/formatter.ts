@@ -11,8 +11,7 @@ export const MAX_FILE_NAME_LENGTH: number = 60;
  * @param start The start timestamp
  * @param decimalPlaces The number of decimal places to show.
  */
-export const duration: (end: number, start: number, decimalPlaces?: number) => string =
-    (end, start, decimalPlaces = DECIMAL_PLACES) => {
+export const duration = (end: number, start: number, decimalPlaces?: number): string => {
         if (isNaN(end) ||
             isNaN(start) ||
             (end - start < 0) ||
@@ -31,8 +30,7 @@ export const duration: (end: number, start: number, decimalPlaces?: number) => s
  * @param path The file name to be formatted.
  * @param maxLength The maximum length of the returned file name, plus three characters for periods.
  */
-export const pathToFilename: (path: string, maxLength?: number) => string =
-    (path, maxLength = MAX_FILE_NAME_LENGTH) => {
+export const pathToFilename = (path: string, maxLength: number = MAX_FILE_NAME_LENGTH): string => {
         let trimmed: string = path.substring(path.lastIndexOf("/") + 1);
 
         if (trimmed.length > maxLength) {
@@ -61,8 +59,7 @@ const LOCALE_STRING_DECIMAL_PLACES: { maximumFractionDigits: number; minimumFrac
  * @param bytes The size in bytes.
  * @param unit The desired unit to conver to.
  */
-export const sizeToString: (bytes: number, unit?: keyof typeof FileSizeUnits) => string =
-    (bytes, unit = "Kb"): string => {
+export const sizeToString = (bytes: number, unit: keyof typeof FileSizeUnits = "Kb"): string => {
         const twoExpTen: number = 1024;
 
         if (bytes === 0) {

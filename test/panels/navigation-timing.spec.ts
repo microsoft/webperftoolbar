@@ -6,8 +6,7 @@ import { PanelFrame } from "../../src/panelframe";
 import { NavigationTimingsPanel } from "../../src/panels/navigation-timing";
 
 // Provides mocked performance timings for tests
-const getMockTimings: (overrides?: Partial<PerformanceTiming>) => PerformanceTiming =
-    (overrides: Partial<PerformanceTiming> = {}): PerformanceTiming => { // tslint:disable-line:arrow-return-shorthand cyclomatic-complexity
+const getMockTimings = (overrides?: Partial<PerformanceTiming>): PerformanceTiming => {
         const zero: PerformanceTiming = {
             connectEnd: 0,
             connectStart: 0,
@@ -31,7 +30,7 @@ const getMockTimings: (overrides?: Partial<PerformanceTiming>) => PerformanceTim
             secureConnectionStart: 0,
             unloadEventEnd: 0,
             unloadEventStart: 0,
-            toJSON: (): string => "",
+            toJSON: () => "",
         };
 
         return { ...zero, ...overrides };

@@ -12,7 +12,7 @@ export interface IMockPanelConfig extends IPanelConfig {
  * The default config for the mock panel which just creates a button with no options.
  */
 export const mockPanelConfig: IMockPanelConfig = {
-    getButtons: (): Button[] => [new Button({})],
+    getButtons: () => [new Button({})],
 };
 
 /**

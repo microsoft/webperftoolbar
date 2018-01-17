@@ -33,7 +33,7 @@ const zeroEntry: IResourcePerformanceEntry = {
 };
 
 /** Provides a short mock of the summary data that would be computed from the performance object. */
-const getMockSummaryRows: () => SummaryRow[] = (): SummaryRow[] => {
+const getMockSummaryRows = (): SummaryRow[] => {
     const summary: SummaryRow[] = rt.getZeroedSummaryTable();
     const allOverWireBytes: number = 1024;
     const imageOverWireBytes: number = 2048;
@@ -50,7 +50,7 @@ const getMockSummaryRows: () => SummaryRow[] = (): SummaryRow[] => {
  * We use prime numbers (greater than two) to make sure they can be added uniquely to verify test cases better.
  * 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101
  */
-const getMockEntries: () => IResourcePerformanceEntry[] = (): IResourcePerformanceEntry[] => [
+const getMockEntries = (): IResourcePerformanceEntry[] => [
     {
         ...zeroEntry,
         initiatorType: "img",

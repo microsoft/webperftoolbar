@@ -6,13 +6,13 @@ import { PanelFrame } from "../panelframe";
 /** Describes the configuration options available for the network panel */
 export interface INavigationTimingsPanelConfig extends IPanelConfig {
     /** The emoji for the button */
-    buttonEmoji: string;
+    buttonEmoji?: string;
     /** The title for the button */
-    buttonTitle: string;
+    buttonTitle?: string;
     /** The goal for the load duration */
     goalMs: number;
     /** The name of the panel */
-    panelName: string;
+    panelName?: string;
     /** The performance timing object, can be included in the config to enable injection of a mock object for testing */
     timings: PerformanceTiming;
 }
@@ -51,8 +51,8 @@ export class NavigationTimingsPanel implements IPanel {
             parent: this,
             title: this.config.buttonTitle,
             emoji: this.config.buttonEmoji,
-            getValue: (): string => `${Formatter.duration(this.config.timings.loadEventEnd, this.config.timings.navigationStart)} ms`,
-            getColor: (): string => this.config.timings.loadEventEnd - this.config.timings.navigationStart <= this.config.goalMs ? "green" : "red",
+            getValue: () => `${Formatter.duration(this.config.timings.loadEventEnd, this.config.timings.navigationStart)} ms`,
+            getColor: () => this.config.timings.loadEventEnd - this.config.timings.navigationStart <= this.config.goalMs ? "green" : "red",
         })];
     }
 
