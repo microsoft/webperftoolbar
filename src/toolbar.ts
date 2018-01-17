@@ -1,5 +1,6 @@
 import { IPanel, IPanelConfig, IPanelWithConfiguration } from "./ipanel";
 import { PanelFrame } from "./panelframe";
+import { addStylesToDom } from "./styler";
 
 /** Describes the toolbar. */
 export class Toolbar {
@@ -15,6 +16,8 @@ export class Toolbar {
      * @param container Optional parameter for the element that contains the toolbar. It defaults to the body of the HTML page.
      */
     public constructor(panels: Array<IPanelWithConfiguration<IPanelConfig, IPanel>>, container: HTMLElement = window.document.body) {
+        addStylesToDom();
+
         this.toolbarRoot = document.createElement("div");
         this.toolbarRoot.setAttribute("id", "PTB_root");
         container.appendChild(this.toolbarRoot);
