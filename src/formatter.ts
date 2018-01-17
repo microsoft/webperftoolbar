@@ -67,11 +67,11 @@ export const sizeToString = (bytes: number, unit: keyof typeof FileSizeUnits = "
         }
 
         switch (unit) {
-            case "b":
+            case FileSizeUnits[FileSizeUnits.b]:
                 return `${bytes.toLocaleString(undefined, LOCALE_STRING_DECIMAL_PLACES)} b`;
-            case "Kb":
+            case FileSizeUnits[FileSizeUnits.Kb]:
                 return `${(bytes / twoExpTen).toLocaleString(undefined, LOCALE_STRING_DECIMAL_PLACES)} Kb`;
-            case "Mb":
+            case FileSizeUnits[FileSizeUnits.Mb]:
                 return `${(bytes / (twoExpTen * twoExpTen)).toLocaleString(undefined, LOCALE_STRING_DECIMAL_PLACES)} Mb`;
             default:
                 throw new Error("unknown unit");

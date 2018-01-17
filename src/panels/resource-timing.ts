@@ -34,14 +34,16 @@ export const getZeroedSummaryTable = (): SummaryRow[] => {
 
     const numberOfSummaries: number = 8;
     const summaryCounts: SummaryRow[] = new Array(numberOfSummaries);
-    summaryCounts[InitiatorTypes.all] = { ...zeroValues, format: "All" };
-    summaryCounts[InitiatorTypes.other] = { ...zeroValues, format: "other" };
-    summaryCounts[InitiatorTypes.link] = { ...zeroValues, format: "link" };
-    summaryCounts[InitiatorTypes.script] = { ...zeroValues, format: "script" };
-    summaryCounts[InitiatorTypes.img] = { ...zeroValues, format: "img" };
-    summaryCounts[InitiatorTypes.css] = { ...zeroValues, format: "css" };
-    summaryCounts[InitiatorTypes.iframe] = { ...zeroValues, format: "iframe" };
-    summaryCounts[InitiatorTypes.xmlhttprequest] = { ...zeroValues, format: "xmlhttprequest" };
+    /* tslint:disable no-any (Because keying into the enum gives a string and not the specific string literal.) */
+    summaryCounts[InitiatorTypes.all] = { ...zeroValues, format: InitiatorTypes[InitiatorTypes.all] as any };
+    summaryCounts[InitiatorTypes.other] = { ...zeroValues, format: InitiatorTypes[InitiatorTypes.other] as any };
+    summaryCounts[InitiatorTypes.link] = { ...zeroValues, format: InitiatorTypes[InitiatorTypes.link] as any };
+    summaryCounts[InitiatorTypes.script] = { ...zeroValues, format: InitiatorTypes[InitiatorTypes.script] as any };
+    summaryCounts[InitiatorTypes.img] = { ...zeroValues, format: InitiatorTypes[InitiatorTypes.img] as any };
+    summaryCounts[InitiatorTypes.css] = { ...zeroValues, format: InitiatorTypes[InitiatorTypes.css]  as any };
+    summaryCounts[InitiatorTypes.iframe] = { ...zeroValues, format: InitiatorTypes[InitiatorTypes.iframe] as any };
+    summaryCounts[InitiatorTypes.xmlhttprequest] = { ...zeroValues, format: InitiatorTypes[InitiatorTypes.xmlhttprequest] as any };
+    /* tslint:enable no-any */
 
     return summaryCounts;
 };
