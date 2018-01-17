@@ -4,24 +4,22 @@
   "description": "A toolbar for monitoring web performance.",
   "main": "dist/bundle.js",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --config webpack.prod.js",
     "test": "karma start karma.conf.js",
     "test-once": "karma start karma.conf.js --single-run",
-    "demo": "npm run build && http-server -o -c-1",
-
+    "demo": "npm run build && node gzip.js && http-server -g -o -c-1",
     "tslint": "tslint -p .",
     "tsc": "tsc -p tsconfig.json",
     "tsc-verbose": "tsc -p tsconfig.json --traceResolution true",
-
     "test-tslint": "tslint -p test/.",
     "test-tsc": "tsc -p test/tsconfig.json",
     "test-tsc-verbose": "tsc -p test/tsconfig.json --traceResolution true",
-
     "check": "npm run tslint && npm run test-tslint && npm run test-tsc && npm run tsc && npm run test-once"
   },
   "keywords": [],
-  "author": "",
-  "license": "",
+  "author": "Microsoft",
+  "license": "MIT",
+  "repository": "github:Microsoft/webperftoolbar",
   "devDependencies": {
     "@types/chai": "^4.0.10",
     "@types/mocha": "^2.2.44",
@@ -45,6 +43,8 @@
     "tslib": "^1.8.1",
     "tslint": "5.8.0",
     "typescript": "^2.6.2",
-    "webpack": "^3.10.0"
+    "uglifyjs-webpack-plugin": "^1.1.6",
+    "webpack": "^3.10.0",
+    "webpack-merge": "^4.1.1"
   }
 }
