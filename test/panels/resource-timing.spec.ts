@@ -159,7 +159,7 @@ describe("Resource timing panel class", () => {
         const numEnumValues: number = Object.keys(InitiatorTypes).length / numObjectKeysPerEnumValue;
 
         expect(zeroed.length).to.equal(numEnumValues);
-        expect(zeroed[InitiatorTypes.all].format).to.equal("All");
+        expect(zeroed[InitiatorTypes.all].format).to.equal("all");
         expect(zeroed[InitiatorTypes.other].format).to.equal("other");
         expect(zeroed[InitiatorTypes.link].format).to.equal("link");
         expect(zeroed[InitiatorTypes.script].format).to.equal("script");
