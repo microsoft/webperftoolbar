@@ -3,5 +3,9 @@ dist/
 *.js
 *.js.map
 *.d.ts
+
 !injectDemoToolbar.user.js
 !commontypes.d.ts
+!webpack.common.js
+!webpack.prod.js
+!gzip.js
