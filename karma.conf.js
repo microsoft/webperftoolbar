@@ -2,8 +2,7 @@
 // Generated on Thu Dec 14 2017 14:49:02 GMT-0800 (Pacific Standard Time)
 
 const path = require('path');
-const webpackConfig = require('./webpack.config');
-
+const webpackConfig = require('./webpack.common.js');
 
 module.exports = function(config) {
   config.set({
