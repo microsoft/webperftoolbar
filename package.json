@@ -11,7 +11,7 @@
     "tslint": "tslint --fix -p .",
     "tsc": "tsc -p tsconfig.json",
     "tsc-verbose": "tsc -p tsconfig.json --traceResolution true",
-    "test-tslint": "tslint -p test/.",
+    "test-tslint": "tslint --fix -p test/.",
     "test-tsc": "tsc -p test/tsconfig.json",
     "test-tsc-verbose": "tsc -p test/tsconfig.json --traceResolution true",
     "check": "npm run tslint && npm run test-tslint && npm run test-tsc && npm run tsc && npm run test-once"

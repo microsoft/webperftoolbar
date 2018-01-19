@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License.
+ */
+
 /**
  * Throw if an argument is null.
  * @param arg The value to verify isn't null
