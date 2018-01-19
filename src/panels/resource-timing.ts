@@ -1,7 +1,7 @@
 import { Button } from "../button";
 import * as Formatter from "../formatter";
 import { IPanel } from "../ipanel";
-import { PanelFrame } from "../panelframe";
+import { PanelFrame } from "../panel-frame";
 import {
     IBytesOverWireButtonConfig,
     IImageBytesOverWireButtonConfig,

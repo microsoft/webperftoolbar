@@ -2,7 +2,7 @@ import { expect } from "chai";
 import "mocha";
 
 import { Button } from "../../src/button";
-import { PanelFrame } from "../../src/panelframe";
+import { PanelFrame } from "../../src/panel-frame";
 import * as rt from "../../src/panels/resource-timing";
 import {
     InitiatorTypes,
@@ -47,27 +47,26 @@ const getMockSummaryRows = (): SummaryRow[] => {
 /* tslint:disable:no-magic-numbers */
 /**
  * Get mock entries.
- * We use prime numbers (greater than two) to make sure they can be added uniquely to verify test cases better.
- * 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101
+ * We use increasing powers of 10 to make addition errors more obvious.
  */
 const getMockEntries = (): IResourcePerformanceEntry[] => [
     {
         ...zeroEntry,
         initiatorType: "img",
-        decodedBodySize: 3,
-        transferSize: 5,
+        decodedBodySize: 1,
+        transferSize: 10,
     },
     {
         ...zeroEntry,
         initiatorType: "img",
-        decodedBodySize: 7,
+        decodedBodySize: 100,
         transferSize: 0, // Zero is the transferred size for a cached file
     },
     {
         ...zeroEntry,
         initiatorType: "link",
-        decodedBodySize: 13,
-        transferSize: 17,
+        decodedBodySize: 1000,
+        transferSize: 10000,
     },
 ];
 /* tslint:enable:no-magic-numbers */
@@ -99,16 +98,16 @@ describe("Resource timing panel class", () => {
 
         /* tslint:disable:no-magic-numbers */
         const image: SummaryRow = counts[InitiatorTypes.img];
-        expect(image.decodedBytes).to.equal(3 + 7);
-        expect(image.overWireBytes).to.equal(5);
+        expect(image.decodedBytes).to.equal(1 + 100);
+        expect(image.overWireBytes).to.equal(10);
         expect(image.numFiles).to.equal(2);
-        expect(image.largestBytes).to.equal(7);
+        expect(image.largestBytes).to.equal(100);
 
         const link: SummaryRow = counts[InitiatorTypes.link];
-        expect(link.decodedBytes).to.equal(13);
-        expect(link.overWireBytes).to.equal(17);
+        expect(link.decodedBytes).to.equal(1000);
+        expect(link.overWireBytes).to.equal(10000);
         expect(link.numFiles).to.equal(1);
-        expect(link.largestBytes).to.equal(13);
+        expect(link.largestBytes).to.equal(1000);
 
         const other: SummaryRow = counts[InitiatorTypes.other];
         expect(other.decodedBytes).to.equal(0);

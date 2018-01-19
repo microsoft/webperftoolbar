@@ -1,5 +1,5 @@
 import { Button } from "./button";
-import { PanelFrame } from "./panelframe";
+import { PanelFrame } from "./panel-frame";
 
 export interface IPanelWithConfiguration<C extends IPanelConfig, P extends IPanel> {
     config: C;
@@ -10,7 +10,7 @@ export interface IPanelConstructor<C, P> {
     new (frame: PanelFrame, config: C): P;
 }
 
-// tslint:disable-next-line:no-empty-interface
+// tslint:disable-next-line:no-empty-interface (Because configurations should share a common base type.)
 export interface IPanelConfig {
 
 }

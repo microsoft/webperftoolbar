@@ -1,5 +1,5 @@
 import { IPanel, IPanelConfig, IPanelWithConfiguration } from "./ipanel";
-import { PanelFrame } from "./panelframe";
+import { PanelFrame } from "./panel-frame";
 import { addStylesToDom } from "./styler";
 
 /** Describes the toolbar. */
