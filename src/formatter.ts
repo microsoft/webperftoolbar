@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License.
+ */
+
 /** The level of precision we want to see for numbers */
 export const DECIMAL_PLACES: number = 2;
 

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License.
+ */
+
 import { Button } from "../button";
 import * as Formatter from "../formatter";
 import { IPanel } from "../ipanel";

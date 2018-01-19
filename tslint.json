@@ -28,7 +28,12 @@
         "strict-boolean-expressions": [true, "allow-undefined-union"],
         "interface-over-type-literal": false,
         "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
-        "typedef": false
+        "typedef": false,
+        "file-header": [
+            true,
+            "Copyright \\(c\\) Microsoft Corporation. All rights reserved. Licensed under the MIT License.",
+            "Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License."
+        ]
     },
     "jsRules": {
         "max-line-length": {

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License.
+ */
+
 import { IPanel, IPanelConfig, IPanelWithConfiguration } from "./ipanel";
 import { PanelFrame } from "./panel-frame";
 import { addStylesToDom } from "./styler";
@@ -5,10 +9,10 @@ import { addStylesToDom } from "./styler";
 /** Describes the toolbar. */
 export class Toolbar {
     /** The panels that will be displayed in the toolbar */
-    private panels: IPanel[];
+    private readonly panels: IPanel[];
 
     /** The root element of the toolbar. */
-    private toolbarRoot: HTMLElement;
+    private readonly toolbarRoot: HTMLElement;
 
     /**
      * Creates the toolbar.
