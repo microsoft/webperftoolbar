@@ -1,8 +1,12 @@
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License.
+ */
+
 import { expect } from "chai";
 import "mocha";
 
 import { Button } from "../../src/button";
-import { PanelFrame } from "../../src/panelframe";
+import { PanelFrame } from "../../src/panel-frame";
 import { NavigationTimingsPanel } from "../../src/panels/navigation-timing";
 
 // Provides mocked performance timings for tests

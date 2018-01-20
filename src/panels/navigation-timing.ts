@@ -1,7 +1,11 @@
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License.
+ */
+
 import { Button } from "../button";
 import * as Formatter from "../formatter";
 import { IPanel, IPanelConfig } from "../ipanel";
-import { PanelFrame } from "../panelframe";
+import { PanelFrame } from "../panel-frame";
 
 /** Describes the configuration options available for the network panel */
 export interface INavigationTimingsPanelConfig extends IPanelConfig {

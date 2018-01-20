@@ -1,6 +1,10 @@
+/*
+ * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License.
+ */
+
 import { Button } from "../../src/button";
 import { IPanel, IPanelConfig } from "../../src/ipanel";
-import { PanelFrame } from "../../src/panelframe";
+import { PanelFrame } from "../../src/panel-frame";
 
 /** Describes the mocked panel configuration */
 export interface IMockPanelConfig extends IPanelConfig {
