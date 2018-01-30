@@ -89,22 +89,6 @@ export const sizeToString = (bytes: number, unit: keyof typeof FileSizeUnits = "
 type HtmlTemplateStringFormatter = { html(literals: TemplateStringsArray, ...placeholders: string[]): string };
 
 /**
- * Sanitizes inputs into an HTML template string.
- */
-export const sanitize: HtmlTemplateStringFormatter = {
-    html: (literals: TemplateStringsArray, ...placeholders: string[]): string => {
-        for (let i = 0; i < placeholders.length; i++) {
-            placeholders[i] = placeholders[i].replace(
-                /["&<>'\\`=]/g,
-                (str: string) => `&#${str.charCodeAt(0)};`,
-            );
-        }
-
-        return html(literals, ...placeholders);
-    },
-};
-
-/**
  * Builds an HTML template string for output.
  * We provide this method so lit-html tooling can recognize HTML strings.
  */
@@ -122,4 +106,20 @@ export const html = (literals: TemplateStringsArray, ...placeholders: string[]):
     }
 
     return outArr.join("");
+};
+
+/**
+ * Sanitizes inputs into an HTML template string.
+ */
+export const sanitize: HtmlTemplateStringFormatter = {
+    html: (literals: TemplateStringsArray, ...placeholders: string[]): string => {
+        for (let i = 0; i < placeholders.length; i++) {
+            placeholders[i] = placeholders[i].replace(
+                /["&<>'\\`=]/g,
+                (str: string) => `&#${str.charCodeAt(0)};`,
+            );
+        }
+
+        return html(literals, ...placeholders);
+    },
 };
