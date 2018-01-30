@@ -64,4 +64,61 @@ describe("Formatter", () => {
             expect(Formatter.sizeToString(twoToTheTenth * twoToTheTenth, "Mb")).to.equal("1.00 Mb");
         });
     });
+
+    describe("html", () => {
+        it("should pass through multiple values strings", () => {
+            const href = "https://github.com";
+            const name = "GitHub";
+            expect(Formatter.html`<a href="${href}">${name}</a>`).to.equal('<a href="https://github.com">GitHub</a>');
+        });
+    });
+
+    describe("sanitize.html", () => {
+        it("should pass through a literal", () => {
+            expect(Formatter.sanitize.html`a`).to.equal("a");
+        });
+
+        it("should sanitize only a placeholder", () => {
+            expect(Formatter.sanitize.html`${"&"}`).to.equal("&#38;");
+        });
+
+        it("should sanitize one literal and one placeholder", () => {
+            expect(Formatter.sanitize.html`a${"&"}`).to.equal("a&#38;");
+        });
+
+        it("should be tested on realistic input", () => {
+            const unsafe = "<script>alert(window);</script>";
+            expect(Formatter.sanitize.html`<p>${unsafe}</p>`).to.equal("<p>&#60;script&#62;alert(window);&#60;/script&#62;</p>");
+        });
+
+        describe("exhaustive unsafe characters", () => {
+            it("should sanitize quotations", () => {
+                expect(Formatter.sanitize.html`quot ${"\""}`).to.equal("quot &#34;");
+            });
+
+            it("should sanitize ampersands", () => {
+                expect(Formatter.sanitize.html`amp ${"&"}`).to.equal("amp &#38;");
+            });
+
+            it("should sanitize less than", () => {
+                expect(Formatter.sanitize.html`lt ${"<"}`).to.equal("lt &#60;");
+            });
+
+            it("should sanitize greater than", () => {
+                expect(Formatter.sanitize.html`gt ${">"}`).to.equal("gt &#62;");
+            });
+
+            it("should sanitize single quotes", () => {
+                expect(Formatter.sanitize.html`apos ${"'"}`).to.equal("apos &#39;");
+            });
+
+            it("should sanitize back slash", () => {
+                expect(Formatter.sanitize.html`back slash ${"\\"}`).to.equal("back slash &#92;");
+            });
+
+            it("should sanitize equals", () => {
+                expect(Formatter.sanitize.html`equal ${"="}`).to.equal("equal &#61;");
+            });
+        });
+    });
 });

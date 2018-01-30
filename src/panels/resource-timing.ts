@@ -137,7 +137,7 @@ export class ResourceTimingsPanel implements IPanel {
      */
     private getDetailTable(): string {
         const entries: IResourcePerformanceEntry[] = this.config.performance.getEntriesByType("resource") as IResourcePerformanceEntry[];
-        const rows: string = entries.map((entry: IResourcePerformanceEntry) => `
+        const rows: string = entries.map((entry: IResourcePerformanceEntry) => Formatter.html`
 <tr>
     <td>${entry.initiatorType}</td>
     <td title="${entry.name}">${Formatter.pathToFilename(entry.name)}</td>
@@ -167,12 +167,12 @@ export class ResourceTimingsPanel implements IPanel {
      * @param summaryCounts An array of summaries data.
      */
     private getSummaryTable(summaryCounts: SummaryRow[]): string {
-        const rows: string = summaryCounts.map((row: SummaryRow): string => `
+        const rows: string = summaryCounts.map((row: SummaryRow): string => Formatter.html`
 <tr>
     <td>${row.format}</td>
     <td class="numeric">${Formatter.sizeToString(row.decodedBytes)}</td>
     <td class="numeric">${Formatter.sizeToString(row.overWireBytes)}</td>
-    <td class="numeric">${row.numFiles}</td>
+    <td class="numeric">${row.numFiles.toLocaleString(undefined, { maximumFractionDigits: 0 })}</td>
     <td class="numeric">${Formatter.sizeToString(row.largestBytes)}</td>
 </tr>`).join("");
 

@@ -22,7 +22,7 @@ export interface INavigationTimingsPanelConfig extends IPanelConfig {
 }
 
 /** A set of default configuration options for the navigation timings panel */
-const navigationTimingsPanelDefaultConfig: INavigationTimingsPanelConfig = {
+const navigationTimingsPanelDefaultConfig: Required<INavigationTimingsPanelConfig> = {
     goalMs: 500,
     timings: performance.timing,
     panelName: "Navigation Timings",
@@ -36,7 +36,7 @@ const navigationTimingsPanelDefaultConfig: INavigationTimingsPanelConfig = {
 export class NavigationTimingsPanel implements IPanel {
 
     /** The settings for this panel. */
-    private readonly config: INavigationTimingsPanelConfig;
+    private readonly config: Required<INavigationTimingsPanelConfig>;
 
     /** The frame that displays this panel. */
     private readonly frame: PanelFrame;
@@ -67,7 +67,7 @@ export class NavigationTimingsPanel implements IPanel {
     public render(target: HTMLElement): void {
         const t: PerformanceTiming = this.config.timings;
 
-        target.innerHTML = `<h1>${this.config.panelName}</h1>
+        target.innerHTML = Formatter.html`<h1>${this.config.panelName}</h1>
 <table>
     <tr>
         <th>Get Connected</th>
