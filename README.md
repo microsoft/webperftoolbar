@@ -1,19 +1,54 @@
 # Web Perf Toolbar
 A component to visualize client performance on your site for the current page.
 
-Shipped as a single JavaScript file with no runtime dependencies, this toolbar drops into your existing sites with a single script tag and barely any configuration. Designed to be injected into a page for developers or stakeholders
-
-## Road Map
-
-Note: This project follows semver and is pre-release. Until a 1.0 release, the public API may change.
+Shipped as a single JavaScript file with no runtime dependencies, this toolbar drops into your existing sites with a single script tag and barely any configuration. Designed to be injected into a page so developers or stakeholders can evaluate the performance of the page as they use it.
 
 ## Getting Started
 
-1. [Visual Studio Code](https://code.visualstudio.com/) is the recommended editor. We [have configured](./.vscode/extensions.json) recommended extensions for working with this project.
-2. Install the npm dev dependencies. `npm install`
-3. Run the demo: `npm run demo`
+1. You'll need Node and NPM.
+2. [Visual Studio Code](https://code.visualstudio.com/) is the recommended editor. We [have configured](./.vscode/extensions.json) recommended extensions for working with this project.
+3. Install the npm dev dependencies. `npm install`
+4. Run the demo: `npm run demo`
 
-## Commands (`npm run ...`)
+## Road Map
+
+Note: This project follows semver and is pre-release. Until a 1.0 release, the public API may change. See "Releasing" below.
+
+### Alpha
+- [x] General toolbar structure (Toolbar, PanelFrame, Panel, Button)
+- [x] Expose Navigation timings
+  - Shows key points in the page load.
+- [x] Expose Resource timings
+  - Shows how big files loaded are, including bytes over wire and time to first byte.
+- [_] Expose User timings (expected version: 0.2.0-alpha)
+  - List all marks (name, start time, duration of 0) sorted by start time ascending.
+  - List all measures (name, start time, duration between two marks) sorted by start time ascending.
+- [_] Continuous integration
+
+Shipping all of these moves from -alpha to -beta.
+
+### Beta
+- [_] Add a way for panels/buttons to update their contents periodically.
+- [_] Expose Custom Metrics with Goals (expected version: 0.3.0-beta)
+  - This is a specific renderer for measures that takes in a configuration object. The object defines names of custom goals, a warning goal value, a target goal value, and a getter that resolves the value to be compared against the goal. If the warning goal value is less than the target goal value, it is assumed the value should be less than the target. If the warning value is higher than the target value, it is assumed the value should be greater than the target. For example, if the warning is 80 and the target is 100, we assume smaller numbers are better. This allows people deploying the toolbar to configure a very custom panel without writing a full panel.
+- [_] Automation that detects changes in the public API to prevent regressions.
+
+Shipping all of these exits beta and bumps the major version to 1.0.0.
+
+### Beyond 1.0
+We welcome contributions. See "Contributing" below. Think you have a great idea for a panel? Open an issue to discuss it. Built one already? Send a PR.
+
+That said, here are some goals for this project:
+- We ship a single JavaScript file.
+  - It must be painless for developers to integrate the toolbar. A mess of CSS, JS, or server side configuration gets messy. Keep it simple.
+- We are a client performance toolbar.
+  - We don't collect or visualize server-side metrics that are exposed somehow though you could use the Custom Metrics pane to get at your server metrics, but that lives in the user's config and not in this repository.
+- We focus on the currently loaded page.
+  - We don't try to persist and visualize info about previous loads.
+- We aren't a generic dev tools toolbar.
+  - Don't build a cookie editor panel, do build a panel that shows the size of cookies and local storage.
+
+## Dev Commands (`npm run ...`)
 
 ### Main Commands
 - `demo` Builds then launches a page with a demo of the toolbar.
@@ -31,23 +66,6 @@ Note: This project follows semver and is pre-release. Until a 1.0 release, the p
 - `test-tslint` Runs tslint on the test sources.
 - `test-tsc` Compiles the test TypeScript sources directly (no Webpack/Karma).
 - `test-tsc-verbose` Same as above, but verbose compiler.
-
-## Contributing
-
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.microsoft.com.
-
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
-To get started, see [Adding To The Toolbar](./docs/adding-to-the-toolbar.md).
-
 ## Maintainers
 - @AdamTReineke (Admin, primary contact)
 - @JoshuaKGoldberg (Admin)

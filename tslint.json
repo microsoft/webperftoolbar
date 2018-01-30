@@ -35,7 +35,8 @@
             "Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT License."
         ],
         "object-literal-sort-keys": false,
-        "newline-per-chained-call": false
+        "newline-per-chained-call": false,
+        "one-variable-per-declaration": [true, "ignore-for-loop"]
     },
     "jsRules": {
         "max-line-length": {
