@@ -20,18 +20,18 @@ Note: This project follows semver and is pre-release. Until a 1.0 release, the p
   - Shows key points in the page load.
 - [x] Expose Resource timings
   - Shows how big files loaded are, including bytes over wire and time to first byte.
-- [_] Expose User timings (expected version: 0.2.0-alpha)
+- [ ] Expose User timings (expected version: 0.2.0-alpha)
   - List all marks (name, start time, duration of 0) sorted by start time ascending.
   - List all measures (name, start time, duration between two marks) sorted by start time ascending.
-- [_] Continuous integration
+- [ ] Continuous integration
 
 Shipping all of these moves from -alpha to -beta.
 
 ### Beta
-- [_] Add a way for panels/buttons to update their contents periodically.
-- [_] Expose Custom Metrics with Goals (expected version: 0.3.0-beta)
+- [ ] Add a way for panels/buttons to update their contents periodically.
+- [ ] Expose Custom Metrics with Goals (expected version: 0.3.0-beta)
   - This is a specific renderer for measures that takes in a configuration object. The object defines names of custom goals, a warning goal value, a target goal value, and a getter that resolves the value to be compared against the goal. If the warning goal value is less than the target goal value, it is assumed the value should be less than the target. If the warning value is higher than the target value, it is assumed the value should be greater than the target. For example, if the warning is 80 and the target is 100, we assume smaller numbers are better. This allows people deploying the toolbar to configure a very custom panel without writing a full panel.
-- [_] Automation that detects changes in the public API to prevent regressions.
+- [ ] Automation that detects changes in the public API to prevent regressions.
 
 Shipping all of these exits beta and bumps the major version to 1.0.0.
 
