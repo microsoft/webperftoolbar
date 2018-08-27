@@ -34,6 +34,23 @@
                         {
                             panelConstructor: PerfToolbar.ResourceTimingsPanel,
                             config: {}
+                        },
+                        {
+                            panelConstructor: PerfToolbar.BasicInfoPanel,
+                            config: {
+                                buttons: [
+                                    {
+                                        emoji: "☁️",
+                                        title: "Server",
+                                        value: function() { return "abc-000.www.foo.com" },
+                                    },
+                                    {
+                                        emoji: "⏱️",
+                                        title: "Time to First Visual",
+                                        value: function() { return "1.23" },
+                                    }
+                                ]
+                            }
                         }
                     /** End configuration */
                     ])).render();
