@@ -34,6 +34,10 @@ const zeroEntry: IResourcePerformanceEntry = {
     responseStart: 0,
     startTime: 0,
     transferSize: 0,
+    toJSON: () => "",
+    workerStart: 0,
+    nextHopProtocol: "",
+    secureConnectionStart: 0,
 };
 
 /** Provides a short mock of the summary data that would be computed from the performance object. */

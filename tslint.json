@@ -36,7 +36,10 @@
         ],
         "object-literal-sort-keys": false,
         "newline-per-chained-call": false,
-        "one-variable-per-declaration": [true, "ignore-for-loop"]
+        "one-variable-per-declaration": [true, "ignore-for-loop"],
+        "file-name-casing": false,
+        "deprecation": false,
+        "no-unused-variable": false
     },
     "jsRules": {
         "max-line-length": {
