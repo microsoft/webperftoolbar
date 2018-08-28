@@ -1,13 +1,3 @@
-// begin types from https://github.com/Microsoft/TypeScript/issues/15012
-
-type Required<T> = {
-    [P in Purify<keyof T>]: NonNullable<T[P]>;
-};
-type Purify<T extends string> = {[P in T]: T; }[T];
-type NonNullable<T> = T & {};
-
-// end types from https://github.com/Microsoft/TypeScript/issues/15012
-
 /**
  * The types we expect from entry.initiatorType.
  * Values from https://w3c.github.io/resource-timing/#dom-performanceresourcetiming-initiatortype

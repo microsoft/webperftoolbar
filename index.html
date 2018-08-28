@@ -16,7 +16,7 @@
             (function() {
                 var initFunc = function() {
                     var s = document.createElement("script");
-                    s.setAttribute("src", "dist\\bundle.js");
+                    s.setAttribute("src", "dist/bundle.js");
                     s.setAttribute("defer", "true");
                     s.onload = startFunc;
                     document.body.appendChild(s);
@@ -34,6 +34,23 @@
                         {
                             panelConstructor: PerfToolbar.ResourceTimingsPanel,
                             config: {}
+                        },
+                        {
+                            panelConstructor: PerfToolbar.BasicInfoPanel,
+                            config: {
+                                buttons: [
+                                    {
+                                        emoji: "☁️",
+                                        title: "Server",
+                                        value: function() { return "abc-000.www.foo.com" },
+                                    },
+                                    {
+                                        emoji: "⏱️",
+                                        title: "Time to First Visual",
+                                        value: function() { return "1.23" },
+                                    }
+                                ]
+                            }
                         }
                     /** End configuration */
                     ])).render();
