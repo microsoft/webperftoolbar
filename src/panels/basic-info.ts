@@ -15,18 +15,15 @@ export interface IBasicButton {
 /** Describes the configuration options available for the network panel */
 export interface IBasicInfoPanelConfig extends IPanelConfig {
     buttons?: IBasicButton[];
-    /** The name of the panel */
-    panelName?: string;
 }
 
-/** A set of default configuration options for the navigation timings panel */
+/** A set of default configuration options for the basic infopanel */
 const basicInfoPanelDefaultConfig: Required<IBasicInfoPanelConfig> = {
-    panelName: "Basic Info",
     buttons: [],
 };
 
 /**
- * Provides a panel that shows the navigation timings for a page
+ * Provides buttons that can show basic information. This doesn't actually open a panel.
  */
 export class BasicInfoPanel implements IPanel {
     /** The settings for this panel. */
@@ -37,7 +34,7 @@ export class BasicInfoPanel implements IPanel {
         this.config = { ...basicInfoPanelDefaultConfig, ...config };
     }
 
-    /** Get buttons. */
+    /** Get a list of buttons by creating instances of each of the buttons defined in the config. */
     public getButtons(): Button[] {
         const out: Button[] = [];
         for (const b of this.config.buttons) {
@@ -53,12 +50,12 @@ export class BasicInfoPanel implements IPanel {
         return out;
     }
 
-    /** Do nothing. */
+    /** Effectively do nothing since the panel can't be opened. */
     public render(target: HTMLElement): void {
         target.innerHTML = "";
     }
 
-    /** Do nothing. */
+    /** Do nothing. Normally the panel would be opened here, but we don't want a panel for this component. */
     public toggle(): void {
         return;
     }
