@@ -24,7 +24,6 @@ const getMockTimings = (overrides?: Partial<PerformanceTiming>): PerformanceTimi
             fetchStart: 0,
             loadEventEnd: 0,
             loadEventStart: 0,
-            msFirstPaint: 0,
             navigationStart: 0,
             redirectEnd: 0,
             redirectStart: 0,
