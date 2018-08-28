@@ -12,12 +12,12 @@ export interface IBasicButton {
     value(): string;
 }
 
-/** Describes the configuration options available for the network panel */
+/** Describes the configuration options available for the basic info panel */
 export interface IBasicInfoPanelConfig extends IPanelConfig {
     buttons?: IBasicButton[];
 }
 
-/** A set of default configuration options for the basic infopanel */
+/** A set of default configuration options for the basic info panel */
 const basicInfoPanelDefaultConfig: Required<IBasicInfoPanelConfig> = {
     buttons: [],
 };
