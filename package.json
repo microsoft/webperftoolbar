@@ -1,6 +1,6 @@
 {
   "name": "webperftoolbar",
-  "version": "0.2.0-alpha",
+  "version": "0.3.1-alpha",
   "description": "A toolbar for monitoring web performance.",
   "main": "dist/bundle.js",
   "scripts": {
