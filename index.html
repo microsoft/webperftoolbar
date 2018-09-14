@@ -51,6 +51,17 @@
                                     }
                                 ]
                             }
+                        },
+                        {
+                            panelConstructor: PerfToolbar.BasicHtmlPanel,
+                            config: {
+                                button: {
+                                    emoji: "⚡",
+                                    title: "Extra Info",
+                                    value: function() { return "Extra information" },
+                                },
+                                html: "<h1>This is extra information that may be of importance to you. Or not.</h1><div><p>If you like lists...</p><ul><li>You</li><li>Are</li><li>Now</li><li>Happy</li></ul></div>",
+                            }
                         }
                     /** End configuration */
                     ])).render();

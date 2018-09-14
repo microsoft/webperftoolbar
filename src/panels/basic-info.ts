@@ -3,14 +3,9 @@
  */
 
 import { Button } from "../button";
+import { IBasicButton } from "../ibasic-button";
 import { IPanel, IPanelConfig } from "../ipanel";
 import { PanelFrame } from "../panel-frame";
-
-export interface IBasicButton {
-    emoji: string;
-    title: string;
-    value(): string;
-}
 
 /** Describes the configuration options available for the basic info panel */
 export interface IBasicInfoPanelConfig extends IPanelConfig {
