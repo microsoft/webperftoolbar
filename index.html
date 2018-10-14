@@ -1,16 +1,21 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Demo for WebPerfToolbar</title>
-        <style>
-            body { background-color: lightgray; }
-        </style>
-    </head>
-    <body>
+<html lang="en">
+
+<head>
+    <title>Demo for WebPerfToolbar</title>
+    <style>
+        body { background-color: lightgray; }
+    </style>
+</head>
+<body>
+    <div role="main">
+        <h1>Demo for WebPerfToolbar</h1>
         <p>The toolbar is at the bottom of this page!</p>
-        <p>Ready to test this on a real site? See <a href="https://github.com/Microsoft/webperftoolbar/blob/master/docs/testing.md">the instructions on injecting this toolbar</a> via browser plugins.</p>
+        <p>Ready to test this on a real site? See <a href="https://github.com/Microsoft/webperftoolbar/blob/master/docs/testing.md">the
+                instructions on injecting this toolbar</a> via browser plugins.</p>
         <p>Ready to add it to your page? View the source of this document to see how we add it to the page.</p>
-        <p>Ready to extend the toolbar with your own panel? Follow <a href="https://github.com/Microsoft/webperftoolbar/blob/master/docs/adding-to-the-toolbar.md">the instructions</a>.</p>
+        <p>Ready to extend the toolbar with your own panel? Follow <a href="https://github.com/Microsoft/webperftoolbar/blob/master/docs/adding-to-the-toolbar.md">the
+                instructions</a>.</p>
 
         <script defer>
             (function() {
@@ -63,7 +68,7 @@
                                 html: "<h1>This is extra information that may be of importance to you. Or not.</h1><div><p>If you like lists...</p><ul><li>You</li><li>Are</li><li>Now</li><li>Happy</li></ul></div>",
                             }
                         }
-                    /** End configuration */
+                        /** End configuration */
                     ])).render();
                 }
 
@@ -77,5 +82,6 @@
                     });
             })();
         </script>
-    </body>
+    </div>
+</body>
 </html>

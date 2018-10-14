@@ -24,6 +24,7 @@ export class Toolbar {
 
         this.toolbarRoot = document.createElement("div");
         this.toolbarRoot.setAttribute("id", "PTB_root");
+        this.toolbarRoot.setAttribute("role", "complementary");
         container.appendChild(this.toolbarRoot);
 
         // Construct the frame and the panels that use it
